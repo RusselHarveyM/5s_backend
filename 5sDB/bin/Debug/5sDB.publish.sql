@@ -15,8 +15,8 @@ SET NUMERIC_ROUNDABORT OFF;
 GO
 :setvar DatabaseName "5sDB"
 :setvar DefaultFilePrefix "5sDB"
-:setvar DefaultDataPath "/var/opt/mssql/data/"
-:setvar DefaultLogPath "/var/opt/mssql/data/"
+:setvar DefaultDataPath "C:\Users\Lenovo\AppData\Local\Microsoft\VisualStudio\SSDT\"
+:setvar DefaultLogPath "C:\Users\Lenovo\AppData\Local\Microsoft\VisualStudio\SSDT\"
 
 GO
 :on error exit
@@ -85,7 +85,6 @@ IF EXISTS (SELECT 1
                 QUOTED_IDENTIFIER ON,
                 ANSI_NULL_DEFAULT ON,
                 CURSOR_DEFAULT LOCAL,
-                RECOVERY FULL,
                 CURSOR_CLOSE_ON_COMMIT OFF,
                 AUTO_CREATE_STATISTICS ON,
                 AUTO_SHRINK OFF,
@@ -252,6 +251,161 @@ IF EXISTS (SELECT 1
 GO
 IF fulltextserviceproperty(N'IsFulltextInstalled') = 1
     EXECUTE sp_fulltext_database 'enable';
+
+
+GO
+PRINT N'Creating Table [dbo].[Building]...';
+
+
+GO
+CREATE TABLE [dbo].[Building] (
+    [Id]           INT           IDENTITY (1, 1) NOT NULL,
+    [BuildingName] VARCHAR (255) NOT NULL,
+    [Buildingcode] VARCHAR (255) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Table [dbo].[Comments]...';
+
+
+GO
+CREATE TABLE [dbo].[Comments] (
+    [Id]           INT        IDENTITY (1, 1) NOT NULL,
+    [Sort]         FLOAT (53) NULL,
+    [SetInOrder]   FLOAT (53) NULL,
+    [Shine]        FLOAT (53) NULL,
+    [Standarize]   FLOAT (53) NULL,
+    [Sustain]      FLOAT (53) NULL,
+    [Security]     FLOAT (53) NULL,
+    [isActive]     BIT        NULL,
+    [DateModified] DATE       NULL,
+    [SpaceId]      INT        NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Table [dbo].[Ratings]...';
+
+
+GO
+CREATE TABLE [dbo].[Ratings] (
+    [Id]           INT        IDENTITY (1, 1) NOT NULL,
+    [Sort]         FLOAT (53) NULL,
+    [SetInOrder]   FLOAT (53) NULL,
+    [Shine]        FLOAT (53) NULL,
+    [Standarize]   FLOAT (53) NULL,
+    [Sustain]      FLOAT (53) NULL,
+    [Security]     FLOAT (53) NULL,
+    [isActive]     BIT        NULL,
+    [DateModified] DATE       NULL,
+    [SpaceId]      INT        NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Table [dbo].[RedTags]...';
+
+
+GO
+CREATE TABLE [dbo].[RedTags] (
+    [Id]       INT           IDENTITY (1, 1) NOT NULL,
+    [ItemName] VARCHAR (255) NULL,
+    [Quantity] INT           NULL,
+    [RoomId]   INT           NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Table [dbo].[Rooms]...';
+
+
+GO
+CREATE TABLE [dbo].[Rooms] (
+    [Id]         INT           IDENTITY (1, 1) NOT NULL,
+    [BuildingId] INT           NULL,
+    [RoomNumber] VARCHAR (255) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Table [dbo].[Spaces]...';
+
+
+GO
+CREATE TABLE [dbo].[Spaces] (
+    [Id]       INT             IDENTITY (1, 1) NOT NULL,
+    [Name]     VARCHAR (255)   NULL,
+    [Pictures] VARBINARY (MAX) NULL,
+    [RoomId]   INT             NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Table [dbo].[User]...';
+
+
+GO
+CREATE TABLE [dbo].[User] (
+    [Id]        INT           NOT NULL,
+    [FirstName] VARCHAR (255) NULL,
+    [LastName]  VARCHAR (255) NULL,
+    [Username]  VARCHAR (255) NULL,
+    [Password]  VARCHAR (255) NULL,
+    [Role]      VARCHAR (255) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+
+GO
+PRINT N'Creating Foreign Key [dbo].[FK_CommentSpace]...';
+
+
+GO
+ALTER TABLE [dbo].[Comments]
+    ADD CONSTRAINT [FK_CommentSpace] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Ratings] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating Foreign Key [dbo].[FK_RatingSpace]...';
+
+
+GO
+ALTER TABLE [dbo].[Ratings]
+    ADD CONSTRAINT [FK_RatingSpace] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Spaces] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating Foreign Key [dbo].[FK_RedTagsRoom]...';
+
+
+GO
+ALTER TABLE [dbo].[RedTags]
+    ADD CONSTRAINT [FK_RedTagsRoom] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Rooms] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating Foreign Key [dbo].[FK_RoomBuilding]...';
+
+
+GO
+ALTER TABLE [dbo].[Rooms]
+    ADD CONSTRAINT [FK_RoomBuilding] FOREIGN KEY ([BuildingId]) REFERENCES [dbo].[Building] ([Id]) ON DELETE CASCADE;
+
+
+GO
+PRINT N'Creating Foreign Key [dbo].[FK_SpacesRoom]...';
+
+
+GO
+ALTER TABLE [dbo].[Spaces]
+    ADD CONSTRAINT [FK_SpacesRoom] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Rooms] ([Id]) ON DELETE CASCADE;
 
 
 GO

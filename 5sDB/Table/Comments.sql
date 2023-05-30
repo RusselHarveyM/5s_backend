@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Comments]
 (
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+	[Id] INT IDENTITY(1,1) NOT NULL, 
     [Sort]    FLOAT  ,
     [SetInOrder]    FLOAT  ,
     [Shine]    FLOAT  ,
@@ -11,5 +11,5 @@
     [DateModified] DATE,
     [SpaceId] INT,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Rating] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Spaces] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CommentSpace] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Ratings] ([Id]) ON DELETE CASCADE,
 )
