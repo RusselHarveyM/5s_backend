@@ -15,8 +15,8 @@ SET NUMERIC_ROUNDABORT OFF;
 GO
 :setvar DatabaseName "5sDB"
 :setvar DefaultFilePrefix "5sDB"
-:setvar DefaultDataPath "C:\Users\Lenovo\AppData\Local\Microsoft\VisualStudio\SSDT\5s"
-:setvar DefaultLogPath "C:\Users\Lenovo\AppData\Local\Microsoft\VisualStudio\SSDT\5s"
+:setvar DefaultDataPath "C:\Users\rayma\AppData\Local\Microsoft\VisualStudio\SSDT\5s"
+:setvar DefaultLogPath "C:\Users\rayma\AppData\Local\Microsoft\VisualStudio\SSDT\5s"
 
 GO
 :on error exit
