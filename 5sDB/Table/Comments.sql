@@ -11,5 +11,5 @@
     [DateModified] DATE,
     [RatingId] INT,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_CommentSpace] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Ratings] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_CommentSpace] FOREIGN KEY ([RatingId]) REFERENCES [dbo].[Ratings] ([Id]) ON DELETE CASCADE,
 )

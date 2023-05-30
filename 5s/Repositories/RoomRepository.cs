@@ -15,8 +15,8 @@ namespace _5s.Repositories
         public async Task<int> CreateRoom(Room room)
         {
             var sql = @"
-                INSERT INTO [dbo].[Rooms] ([BuildingId], [RoomNumber])
-                VALUES ( @BuildingId, @RoomNumber);
+                INSERT INTO [dbo].[Rooms] ([BuildingId], [RoomNumber], [Image])
+                VALUES ( @BuildingId, @RoomNumber, @Image);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -82,6 +82,7 @@ namespace _5s.Repositories
             var sql = @"
                 UPDATE [dbo].[Rooms]
                 SET RoomNumber = @RoomNumber,
+                Image = @Image
                 WHERE Id = @Id;
             ";
 
