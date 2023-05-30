@@ -15,7 +15,8 @@ namespace _5s.Services
             var buildingModel = new Building
             {
                 BuildingName = building.BuildingName,
-                BuildingCode = building.BuildingCode
+                BuildingCode = building.BuildingCode,
+                Image = building.Image
             };
 
             return await _buildingRepository.CreateBuilding(buildingModel);
@@ -45,7 +46,8 @@ namespace _5s.Services
             var updatedModel = new Building
             {
                 BuildingCode = updatedBuilding.BuildingCode,
-                BuildingName = updatedBuilding.BuildingName
+                BuildingName = updatedBuilding.BuildingName,
+                Image = updatedBuilding.Image
             };
 
             var updated = await _buildingRepository.UpdateBuilding(id, updatedModel);
