@@ -9,7 +9,7 @@
     [Security]    FLOAT  ,
     [isActive] BIT,
     [DateModified] DATE,
-    [SpaceId] INT,
+    [RatingId] INT,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Rating] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Spaces] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Comment] FOREIGN KEY ([RatingId]) REFERENCES [dbo].[Ratings] ([Id]) ON DELETE CASCADE,
 )

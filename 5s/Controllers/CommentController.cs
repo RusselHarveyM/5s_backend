@@ -1,0 +1,93 @@
+﻿using _5s.Model;
+using _5s.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace _5s.Controllers
+{
+    [Route("api/comment")]
+    [ApiController]
+    public class CommentController : Controller
+    {
+        private readonly ICommentService _commentService;
+        public CommentController(ICommentService commentService)
+        {
+            _commentService = commentService;
+        }
+
+        [HttpPost(Name = "CreateComment")]
+        public async Task<IActionResult> CreateRatings([FromBody] Comment comment)
+        {
+            try
+            {
+                var newComment = await _commentService.CreateComment(comment);
+                return CreatedAtRoute("GetCommentById", new { id = comment.Id }, newComment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet(Name = "GetAllComment")]
+        public async Task<IActionResult> GetComment()
+        {
+            try
+            {
+                var comment = await _commentService.GetAllComment();
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("{id}/comment", Name = "GetCommentById")]
+        public async Task<IActionResult> GetComment(int id)
+        {
+            try
+            {
+                var comment = await _commentService.GetCommentById(id);
+                return Ok(comment);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPut("{id}", Name = "UpdateComment")]
+        public async Task<IActionResult> UpdateComment(int id, [FromBody] Comment updateComment)
+        {
+            try
+            {
+                var dbComment = await _commentService.GetCommentById(id);
+                if (dbComment == null)
+                    return NotFound();
+                var updatedRatings = await _commentService.UpdateComment(id, updateComment);
+                return Ok(updatedRatings);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpDelete("{name}", Name = "DeleteComment")]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            try
+            {
+                var dbComment = await _commentService.GetCommentById(id);
+                if (dbComment == null)
+                    return NotFound();
+                await _commentService.DeleteComment(id);
+                return Ok("Barangay successfully deleted");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+    }
+}
