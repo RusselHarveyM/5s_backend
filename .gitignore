@@ -18,6 +18,8 @@ bin/
 obj/
 .vs/
 
+*.assets.cache
+
 
 
 # User-specific files
