@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string? BuildingName { get; set; }
         public string? BuildingCode { get; set; }
-        public List<byte[]> Image { get; set; }
+        public byte[] Image { get; set; }
     }
 }

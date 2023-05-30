@@ -17,15 +17,15 @@ namespace _5s.Services
             {
                 Name = space.Name,
                 Pictures = space.Pictures,
-                RoomId = space.RoomId,
+                RoomId = space.RoomId
             };
 
-            return await _spaceRepository.CreateSpace(space);
+            return await _spaceRepository.CreateSpace(spaceModel);
         }
 
-        public async Task DeleteSpace(string name)
+        public async Task DeleteSpace(int id)
         {
-            await _spaceRepository.DeleteSpace(name);
+            await _spaceRepository.DeleteSpace(id);
         }
 
         public Task<IEnumerable<Space>> GetAllSpace()

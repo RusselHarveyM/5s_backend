@@ -4,5 +4,5 @@
     [Pictures]    VARBINARY(MAX),
     [RoomId] INT, 
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_SpacesRoom] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Rooms] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_SpacesRoom] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Rooms] ([Id]) ON DELETE CASCADE
 );

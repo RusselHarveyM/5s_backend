@@ -15,12 +15,12 @@ namespace _5s.Controllers
         }
 
         [HttpPost(Name = "CreateComment")]
-        public async Task<IActionResult> CreateRatings([FromBody] Comment comment)
+        public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
             try
             {
                 var newComment = await _commentService.CreateComment(comment);
-                return CreatedAtRoute("GetCommentById", new { id = comment.Id }, newComment);
+                return Ok(newComment);
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace _5s.Controllers
             }
         }
 
-        [HttpDelete("{name}", Name = "DeleteComment")]
+        [HttpDelete("{id}", Name = "DeleteComment")]
         public async Task<IActionResult> DeleteComment(int id)
         {
             try
@@ -82,7 +82,7 @@ namespace _5s.Controllers
                 if (dbComment == null)
                     return NotFound();
                 await _commentService.DeleteComment(id);
-                return Ok("Barangay successfully deleted");
+                return Ok("Comment successfully deleted");
             }
             catch (Exception ex)
             {

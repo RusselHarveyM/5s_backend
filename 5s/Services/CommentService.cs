@@ -17,7 +17,7 @@ namespace _5s.Services
                 Sort = comment.Sort,
                 SetInOrder = comment.SetInOrder,
                 Shine = comment.Shine,
-                Standerize = comment.Standerize,
+                Standarize = comment.Standarize,
                 Sustain = comment.Sustain,
                 Security = comment.Security,
                 isActive = comment.isActive,
@@ -49,14 +49,14 @@ namespace _5s.Services
                 Sort = updateComment.Sort,
                 SetInOrder = updateComment.SetInOrder,
                 Shine = updateComment.Shine,
-                Standerize = updateComment.Standerize,
+                Standarize = updateComment.Standarize,
                 Sustain = updateComment.Sustain,
                 Security = updateComment.Security,
                 isActive = updateComment.isActive,
                 DateModified = DateTime.Now,
                 RatingId = updateComment.RatingId
             };
-            return await _commentRepository.UpdateComment(id, updateComment);
+            return await _commentRepository.UpdateComment(id, updatedComment);
         }
     }
 }

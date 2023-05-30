@@ -20,7 +20,7 @@ namespace _5s.Controllers
             try
             {
                 var newRating = await _ratingsService.CreateRatings(ratings);
-                return CreatedAtRoute("GetRatingsId", new { id = ratings.Id }, newRating);
+                return CreatedAtRoute("GetRatingsById", new { id = ratings.Id }, newRating);
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace _5s.Controllers
             }
         }
 
-        [HttpDelete("{name}", Name = "DeleteRatings")]
+        [HttpDelete("{id}", Name = "DeleteRatings")]
         public async Task<IActionResult> DeleteRatings(int id)
         {
             try
@@ -82,7 +82,7 @@ namespace _5s.Controllers
                 if (dbRatings == null)
                     return NotFound();
                 await _ratingsService.DeleteRatings(id);
-                return Ok("Barangay successfully deleted");
+                return Ok("Ratings successfully deleted");
             }
             catch (Exception ex)
             {

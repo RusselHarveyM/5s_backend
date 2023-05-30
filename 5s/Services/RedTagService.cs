@@ -47,7 +47,8 @@ namespace _5s.Services
             var updatedRedtag = new RedTag
             {
                 ItemName = updateRedTag.ItemName,
-                Quantity = updateRedTag.Quantity
+                Quantity = updateRedTag.Quantity,
+                RoomId = updateRedTag.RoomId
             };
 
             return await _repository.UpdateRedTag(id, updatedRedtag);
