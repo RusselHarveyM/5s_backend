@@ -65,6 +65,7 @@
     <Build Include="Table\Room.sql" />
     <Build Include="Table\Space.sql" />
     <Build Include="Table\User.sql" />
+    <Build Include="Table\Comments.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="5sDB_1.publish.xml" />

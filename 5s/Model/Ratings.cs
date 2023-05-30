@@ -9,5 +9,8 @@
         public float Standerize { get; set; }
         public float Sustain { get; set; }
         public float Security { get; set; }
+        public Boolean isActive { get; set; }
+        public DateTime DateModified { get; set; }
+        public int SpaceId { get; set; }
     }
 }

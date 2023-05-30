@@ -44,6 +44,7 @@ namespace _5s.Services
         {
             var updatedModel = new Building
             {
+                BuildingCode = updatedBuilding.BuildingCode,
                 BuildingName = updatedBuilding.BuildingName
             };
 

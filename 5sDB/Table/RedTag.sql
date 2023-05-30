@@ -1,8 +1,9 @@
-﻿CREATE TABLE RedTags [dbo].[RedTags](
+﻿CREATE TABLE [dbo].[RedTags](
     [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [ItemName]    VARCHAR(255)  ,
-    [ItemNumber]    INT  ,
+    [Quantity]    INT  ,
+    [RoomId]    INT,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_RedTags] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Room] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_RedTags] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Rooms] ([Id]) ON DELETE CASCADE,
 
 );

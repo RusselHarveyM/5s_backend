@@ -20,6 +20,9 @@ namespace _5s.Services
                 Standerize = ratings.Standerize,
                 Sustain = ratings.Sustain,
                 Security = ratings.Security,
+                isActive = ratings.isActive,
+                DateModified = DateTime.Now,
+                SpaceId = ratings.SpaceId
             };
 
             return await _repository.CreateRatings(ratingModel);
@@ -54,6 +57,8 @@ namespace _5s.Services
                 Standerize = updatedRatings.Standerize,
                 Sustain = updatedRatings.Sustain,
                 Security = updatedRatings.Security,
+                isActive = updatedRatings.isActive,
+                DateModified = DateTime.Now
             };
 
             return await _repository.UpdateRatings(id, ratingModel);

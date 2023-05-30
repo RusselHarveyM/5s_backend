@@ -16,8 +16,8 @@ namespace _5s.Repositories
         public async Task<int> CreateUser(User user)
         {
             var sql = @"
-                INSERT INTO Users (FirstName, LastName, Username, Password, IsAdmin)
-                VALUES (@FirstName, @LastName, @Username, @Password, @IsAdmin);
+                INSERT INTO [dbo].[User] ([FirstName], [LastName], [Username], [Password], [Role])
+                VALUES (@FirstName, @LastName, @Username, @Password, @Role);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -30,7 +30,7 @@ namespace _5s.Repositories
         public async Task DeleteUser(int id)
         {
             var sql = @"
-                DELETE FROM Users
+                DELETE FROM [dbo].[User]
                 WHERE Id = @Id;
             ";
 
@@ -43,7 +43,7 @@ namespace _5s.Repositories
         public async Task<IEnumerable<User>> GetAllUsers()
         {
             var sql = @"
-                SELECT * FROM Users;
+                SELECT * FROM [dbo].[User];
             ";
 
             using (var connection = _context.CreateConnection())
@@ -55,7 +55,7 @@ namespace _5s.Repositories
         public async Task<User> GetUserById(int id)
         {
             var sql = @"
-                SELECT * FROM Users
+                SELECT * FROM [dbo].[User]
                 WHERE Id = @Id;
             ";
 
@@ -68,7 +68,7 @@ namespace _5s.Repositories
         public async Task<User> GetUserByName(string name)
         {
             var sql = @"
-                SELECT * FROM Users
+                SELECT * FROM [dbo].[User]
                 WHERE FirstName = @Name OR LastName = @Name;
             ";
 
@@ -82,7 +82,7 @@ namespace _5s.Repositories
         public async Task<int> UpdateUser(int id, User updatedUser)
         {
             var sql = @"
-                UPDATE Users
+                UPDATE [dbo].[User]
                 SET FirstName = @FirstName,
                     LastName = @LastName,
                     Username = @Username,

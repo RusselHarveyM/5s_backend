@@ -3,7 +3,7 @@
     public class Room
     {
         public int Id { get; set; }
+        public int BuildingId { get; set; }
         public string? RoomNumber { get; set; }
-        public byte[]? Picture { get; set; }
     }
 }

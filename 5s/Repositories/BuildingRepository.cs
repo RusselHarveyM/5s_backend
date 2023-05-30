@@ -16,7 +16,7 @@ namespace _5s.Repositories
         public async Task<int> CreateBuilding(Building building)
         {
             var sql = @"
-                INSERT INTO Buildings (BuildingName, BuildingCode)
+                INSERT INTO [dbo].[Building] ([BuildingName], [BuildingCode])
                 VALUES (@BuildingName, @BuildingCode);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
@@ -30,7 +30,7 @@ namespace _5s.Repositories
         public async Task DeleteBuilding(int id)
         {
             var sql = @"
-                DELETE FROM Buildings
+                DELETE FROM [dbo].[Building]
                 WHERE Id = @Id;
             ";
 
@@ -43,7 +43,7 @@ namespace _5s.Repositories
         public async Task<IEnumerable<Building>> GetAllBuildings()
         {
             var sql = @"
-                SELECT * FROM Buildings;
+                SELECT * FROM [dbo].[Building];
             ";
 
             using (var connection = _context.CreateConnection())
@@ -55,7 +55,7 @@ namespace _5s.Repositories
         public async Task<Building> GetBuildingById(int id)
         {
             var sql = @"
-                SELECT * FROM Buildings
+                SELECT * FROM [dbo].[Building]
                 WHERE Id = @Id;
             ";
 
@@ -68,7 +68,7 @@ namespace _5s.Repositories
         public async Task<Building> GetBuildingByName(string name)
         {
             var sql = @"
-                SELECT * FROM Buildings
+                SELECT * FROM [dbo].[Building]
                 WHERE BuildingName = @Name;
             ";
 
@@ -81,7 +81,7 @@ namespace _5s.Repositories
         public async Task<Building> GetBuildingByCode(string code)
         {
             var sql = @"
-                SELECT * FROM Buildings
+                SELECT * FROM [dbo].[Building]
                 WHERE BuildingCode = @Code;
             ";
 
@@ -94,7 +94,7 @@ namespace _5s.Repositories
         public async Task<int> UpdateBuilding(int id, Building updatedBuilding)
         {
             var sql = @"
-                UPDATE Buildings
+                UPDATE [dbo].[Building]
                 SET BuildingName = @BuildingName,
                     BuildingCode = @BuildingCode
                 WHERE Id = @Id;

@@ -16,6 +16,7 @@ namespace _5s.Services
             {
                 ItemName = redtag.ItemName,
                 Quantity = redtag.Quantity,
+                RoomId = redtag.RoomId,
             };
 
             return await _repository.CreateRedTag(redtag);
@@ -41,11 +42,12 @@ namespace _5s.Services
             return await _repository.GetRedTagByName(name);
         }
 
-        public async Task<int> UpdateRedTag(int id, RedTag updatedRedTag)
+        public async Task<int> UpdateRedTag(int id, RedTag updateRedTag)
         {
             var updatedRedtag = new RedTag
             {
-                Quantity = updatedRedTag.Quantity
+                ItemName = updateRedTag.ItemName,
+                Quantity = updateRedTag.Quantity
             };
 
             return await _repository.UpdateRedTag(id, updatedRedtag);

@@ -16,6 +16,8 @@ namespace _5s.Services
             var spaceModel = new Space
             {
                 Name = space.Name,
+                Pictures = space.Pictures,
+                RoomId = space.RoomId,
             };
 
             return await _spaceRepository.CreateSpace(space);
