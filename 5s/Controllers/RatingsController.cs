@@ -57,7 +57,7 @@ namespace _5s.Controllers
         }
 
         [HttpPut("{id}", Name = "UpdateRatings")]
-        public async Task<IActionResult> UpdateRedTag(int id, [FromBody] Ratings ratings)
+        public async Task<IActionResult> UpdateRatings(int id, [FromBody] Ratings ratings)
         {
             try
             {
@@ -74,14 +74,14 @@ namespace _5s.Controllers
         }
 
         [HttpDelete("{name}", Name = "DeleteRatings")]
-        public async Task<IActionResult> DeleteRatings(string name)
+        public async Task<IActionResult> DeleteRatings(int id)
         {
             try
             {
-                var dbRatings = await _ratingsService.GetRatingsByName(name);
+                var dbRatings = await _ratingsService.GetRatingsById(id);
                 if (dbRatings == null)
                     return NotFound();
-                await _ratingsService.DeleteRatings(dbRatings.Id);
+                await _ratingsService.DeleteRatings(id);
                 return Ok("Barangay successfully deleted");
             }
             catch (Exception ex)
