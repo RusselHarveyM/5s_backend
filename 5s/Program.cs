@@ -1,6 +1,8 @@
 using _5s.Context;
 using _5s.Repositories;
 using _5s.Services;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 
@@ -31,6 +33,39 @@ app.Run();
 
 void ConfigureServices(IServiceCollection services)
 {
+    services.AddCors(options =>
+    {
+        options.AddPolicy("CorsPolicy",
+            builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
+    });
+
+    services.AddControllers().ConfigureApiBehaviorOptions(x => { x.SuppressMapClientErrors = true; });
+    services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+    services.AddEndpointsApiExplorer();
+
+    services.AddSwaggerGen(options =>
+    {
+        // Add header documentation in swagger
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "5s Methodology",
+            Description = "An API that evaluates using the 5s methodology in a workplace.",
+        });
+
+        // Feed generated xml api docs to swagger
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    });
+
+    services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
     services.AddScoped<DapperContext>();
     services.AddScoped<IUserService, UserService>();
     services.AddScoped<IRoomService, RoomService>();
@@ -38,16 +73,10 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IRatingService, RatingService>();
     services.AddScoped<IRedTagService, RedTagService>();
     services.AddScoped<ISpaceService, SpaceService>();
-
     services.AddScoped<IUserRepository, UserRepository>();
     services.AddScoped<IRoomRepository, RoomRepository>();
     services.AddScoped<IBuildingRepository, BuildingRepository>();
     services.AddScoped<IRatingsRepository, RatingsRepository>();
     services.AddScoped<IRedTagRepository, RedTagRepository>();
     services.AddScoped<ISpaceRepository, SpaceRepository>();
-
-
-    services.AddControllers();
-    services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
 }

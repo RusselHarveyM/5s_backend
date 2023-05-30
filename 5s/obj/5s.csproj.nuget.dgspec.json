@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Documents\\5s_backend\\5s\\5s.csproj": {}
+    "C:\\Users\\Lenovo\\Documents\\vs_projects\\Group7-5s-dev\\5s\\5s\\5s.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Documents\\5s_backend\\5s\\5s.csproj": {
+    "C:\\Users\\Lenovo\\Documents\\vs_projects\\Group7-5s-dev\\5s\\5s\\5s.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Documents\\5s_backend\\5s\\5s.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Documents\\vs_projects\\Group7-5s-dev\\5s\\5s\\5s.csproj",
         "projectName": "5s",
-        "projectPath": "C:\\Users\\Admin\\Documents\\5s_backend\\5s\\5s.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Documents\\5s_backend\\5s\\obj\\",
+        "projectPath": "C:\\Users\\Lenovo\\Documents\\vs_projects\\Group7-5s-dev\\5s\\5s\\5s.csproj",
+        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lenovo\\Documents\\vs_projects\\Group7-5s-dev\\5s\\5s\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -41,6 +41,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.1, )"
+            },
             "Dapper": {
               "target": "Package",
               "version": "[2.0.123, )"

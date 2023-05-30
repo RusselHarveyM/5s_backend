@@ -15,12 +15,15 @@ namespace _5s.Controllers
         }
 
         [HttpPost(Name = "CreateBuilding")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateBuilding([FromBody] Building building)
         {
             try
             {
                 var newBuilding = await _buildingService.CreateBuilding(building);
-                return CreatedAtRoute("GetBuildingId", new { id = building.Id }, newBuilding);
+                return CreatedAtRoute("CreateBuilding", new { id = building.Id }, newBuilding);
             }
             catch (Exception ex)
             {

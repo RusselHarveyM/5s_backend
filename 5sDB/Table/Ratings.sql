@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Ratings](
-    [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Id] INT NOT NULL IDENTITY(1,1), 
     [Sort]    FLOAT  ,
     [SetInOrder]    FLOAT  ,
     [Shine]    FLOAT  ,
@@ -10,5 +10,5 @@
     [DateModified] DATE,
     [SpaceId] INT,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Rating] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Spaces] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_RatingSpace] FOREIGN KEY ([SpaceId]) REFERENCES [dbo].[Spaces] ([Id]) ON DELETE CASCADE,
 );

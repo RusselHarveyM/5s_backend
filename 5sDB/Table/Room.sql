@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Rooms](
-    [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Id] INT NOT NULL IDENTITY(1,1), 
     [BuildingId]    INT  ,
     [RoomNumber]    VARCHAR(255) ,
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Room] FOREIGN KEY ([BuildingId]) REFERENCES [dbo].[Building] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_RoomBuilding] FOREIGN KEY ([BuildingId]) REFERENCES [dbo].[Building] ([Id]) ON DELETE CASCADE,
 );
