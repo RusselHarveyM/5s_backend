@@ -1,12 +1,12 @@
 ﻿CREATE TABLE [dbo].[Comments]
 (
 	[Id] INT IDENTITY(1,1) NOT NULL, 
-    [Sort]    FLOAT  ,
-    [SetInOrder]    FLOAT  ,
-    [Shine]    FLOAT  ,
-    [Standarize]    FLOAT  ,
-    [Sustain]    FLOAT  ,
-    [Security]    FLOAT  ,
+    [Sort]    VARCHAR(255)  ,
+    [SetInOrder]    VARCHAR(255)  ,
+    [Shine]    VARCHAR(255)  ,
+    [Standarize]    VARCHAR(255)  ,
+    [Sustain]    VARCHAR(255)  ,
+    [Security]    VARCHAR(255)  ,
     [isActive] BIT,
     [DateModified] DATE,
     [RatingId] INT,

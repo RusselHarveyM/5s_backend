@@ -17,7 +17,7 @@ namespace _5s.Repositories
         {
             var sql = @"
                 INSERT INTO [dbo].[RedTags] ([ItemName], [Quantity], [RoomId])
-                VALUES (@ItemName, @Quantity, RoomId);
+                VALUES (@ItemName, @Quantity, @RoomId);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -83,7 +83,8 @@ namespace _5s.Repositories
             var sql = @"
                 UPDATE [dbo].[RedTags]
                 SET ItemName = @ItemName,
-                Quantity = @Quantity
+                Quantity = @Quantity,
+                RoomId = @RoomId
                 WHERE Id = @Id;
             ";
 

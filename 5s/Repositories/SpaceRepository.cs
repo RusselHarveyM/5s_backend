@@ -14,10 +14,10 @@ namespace _5s.Repositories
         }
         public DapperContext Context => _context;
         public async Task<int> CreateSpace(Space space)
-        {
+{
             var sql = @"
                 INSERT INTO [dbo].[Spaces] ([Name], [Pictures], [RoomId])
-                VALUES (@Name @Pictures, @RoomId);
+                VALUES (@Name, @Pictures, @RoomId);
             ";
 
             using (var connection = _context.CreateConnection())
@@ -26,7 +26,7 @@ namespace _5s.Repositories
             }
         }
 
-        public async Task DeleteSpace(string id)
+        public async Task DeleteSpace(int id)
         {
             var sql = @"
                 DELETE FROM [dbo].[Spaces]
@@ -81,8 +81,7 @@ namespace _5s.Repositories
         {
             var sql = @"
                 UPDATE [dbo].[Spaces]
-                SET ,
-                    [Name] = @Name,
+                SET [Name] = @Name,
                     [Pictures] = @Pictures
                 WHERE [Id] = @Id;
             ";

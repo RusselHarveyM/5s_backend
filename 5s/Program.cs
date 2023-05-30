@@ -69,6 +69,7 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<DapperContext>();
     services.AddScoped<IUserService, UserService>();
     services.AddScoped<IRoomService, RoomService>();
+    services.AddScoped<ICommentService, CommentService>();
     services.AddScoped<IBuildingService, BuildingService>();
     services.AddScoped<IRatingService, RatingService>();
     services.AddScoped<IRedTagService, RedTagService>();
@@ -77,6 +78,7 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IRoomRepository, RoomRepository>();
     services.AddScoped<IBuildingRepository, BuildingRepository>();
     services.AddScoped<IRatingsRepository, RatingsRepository>();
+    services.AddScoped<ICommentRepository, CommentRepository>();
     services.AddScoped<IRedTagRepository, RedTagRepository>();
     services.AddScoped<ISpaceRepository, SpaceRepository>();
 }

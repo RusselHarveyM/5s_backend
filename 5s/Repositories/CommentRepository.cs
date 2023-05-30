@@ -16,8 +16,8 @@ namespace _5s.Repositories
         public async Task<int> CreateComment(Comment comment)
         {
             var sql = @"
-                INSERT INTO [dbo].[Comments] ([Sort], [SetInOrder], [Shine], [Standerize], [Sustain], [Security], [isActive], [DateModified], [RatingId])
-                VALUES (@Sort, @SetInOrder, @Shine, @Standerize, @Sustain, @Security, @isActive, @DateModified, @RatingId);
+                INSERT INTO [dbo].[Comments] ([Sort], [SetInOrder], [Shine], [Standarize], [Sustain], [Security], [isActive], [DateModified], [RatingId])
+                VALUES (@Sort, @SetInOrder, @Shine, @Standarize, @Sustain, @Security, @isActive, @DateModified, @RatingId);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -36,7 +36,7 @@ namespace _5s.Repositories
 
             using (var connection = _context.CreateConnection())
             {
-                await connection.ExecuteAsync(sql, id);
+                await connection.ExecuteAsync(sql, new { Id = id });
             }
         }
 
@@ -72,13 +72,16 @@ namespace _5s.Repositories
                 SET [Sort] = @Sort,
                     [SetInOrder] = @SetInOrder,
                     [Shine] = @Shine,
-                    [Standerize] = @Standerize,
+                    [Standarize] = @Standarize,
                     [Sustain] = @Sustain,
                     [Security] = @Security,
                     [isActive] = @isActive,
                     [DateModified] = @DateModified,
+                    [RatingId] = @RatingId
                 WHERE [Id] = @Id;
             ";
+
+            updateComment.Id = id;
 
             using (var connection = _context.CreateConnection())
             {

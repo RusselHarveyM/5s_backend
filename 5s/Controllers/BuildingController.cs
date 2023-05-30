@@ -85,7 +85,7 @@ namespace _5s.Controllers
                 if (dbRatings == null)
                     return NotFound();
                 await _buildingService.DeleteBuilding(dbRatings.Id);
-                return Ok("Barangay successfully deleted");
+                return Ok("Building successfully deleted");
             }
             catch (Exception ex)
             {

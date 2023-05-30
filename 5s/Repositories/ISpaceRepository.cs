@@ -9,6 +9,6 @@ namespace _5s.Repositories
         public Task<Space> GetSpaceById(int id);
         public Task<Space> GetSpaceByName(string name);
         public Task<int> UpdateSpace(int id, Space updatedSpace);
-        public Task DeleteSpace(string name);
+        public Task DeleteSpace(int id);
     }
 }

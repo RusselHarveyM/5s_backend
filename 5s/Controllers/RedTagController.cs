@@ -15,12 +15,12 @@ namespace _5s.Controllers
         }
 
         [HttpPost(Name = "CreateRedTag")]
-        public async Task<IActionResult> CreateRoom([FromBody] RedTag redtag)
+        public async Task<IActionResult> CreateRedTag([FromBody] RedTag redtag)
         {
             try
             {
                 var newRedTag = await _redTagService.CreateRedTag(redtag);
-                return CreatedAtRoute("GetSpaceId", new { id = redtag.Id }, newRedTag);
+                return CreatedAtRoute("GetRedTagById", new { id = redtag.Id }, newRedTag);
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace _5s.Controllers
                 if (dbRoom == null)
                     return NotFound();
                 await _redTagService.DeleteRedTag(dbRoom.Id);
-                return Ok("Barangay successfully deleted");
+                return Ok("RedTag successfully deleted");
             }
             catch (Exception ex)
             {

@@ -20,7 +20,7 @@ namespace _5s.Controllers
             try
             {
                 var newRoom = await _roomService.CreateRoom(room);
-                return CreatedAtRoute("GetSpaceId", new { id = room.Id }, newRoom);
+                return CreatedAtRoute("GetRoomById", new { id = room.Id }, newRoom);
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace _5s.Controllers
                 if (dbRoom == null)
                     return NotFound();
                 await _roomService.DeleteRoom(dbRoom.Id);
-                return Ok("Barangay successfully deleted");
+                return Ok("Room successfully deleted");
             }
             catch (Exception ex)
             {
