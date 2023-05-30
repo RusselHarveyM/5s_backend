@@ -20,7 +20,7 @@ namespace _5s.Controllers
             try
             {
                 var newSpace = await _spaceService.CreateSpace(space);
-                return CreatedAtRoute("GetSpaceId", new { id = space.Id }, newSpace);
+                return CreatedAtRoute("GetSpaceById", new { id = space.Id }, newSpace);
             }
             catch (Exception ex)
             {
@@ -73,16 +73,16 @@ namespace _5s.Controllers
             }
         }
 
-        [HttpDelete("{name}", Name = "DeleteSpace")]
-        public async Task<IActionResult> DeleteSpace(string name)
+        [HttpDelete("{id}", Name = "DeleteSpace")]
+        public async Task<IActionResult> DeleteSpace(int id)
         {
             try
             {
-                var dbSpace = await _spaceService.GetSpaceByName(name);
+                var dbSpace = await _spaceService.GetSpaceById(id);
                 if (dbSpace == null)
                     return NotFound();
-                await _spaceService.DeleteSpace(name);
-                return Ok("Barangay successfully deleted");
+                await _spaceService.DeleteSpace(id);
+                return Ok("Space successfully deleted");
             }
             catch (Exception ex)
             {

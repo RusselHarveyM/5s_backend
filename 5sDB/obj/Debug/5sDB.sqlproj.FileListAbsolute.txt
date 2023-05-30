@@ -4,3 +4,9 @@ C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\obj\Debug\_5sDB.dll
 C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\obj\Debug\_5sDB.pdb
 C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\bin\Debug\_5sDB.dll
 C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\bin\Debug\_5sDB.pdb
+C:\Users\rayma\5s_backend\5sDB\bin\Debug\5sDB.dacpac
+C:\Users\rayma\5s_backend\5sDB\bin\Debug\_5sDB.dll
+C:\Users\rayma\5s_backend\5sDB\bin\Debug\_5sDB.pdb
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\5sDB.sqlproj.AssemblyReference.cache
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\_5sDB.dll
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\_5sDB.pdb

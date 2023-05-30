@@ -73,16 +73,16 @@ namespace _5s.Controllers
             }
         }
 
-        [HttpDelete("{name}", Name = "DeleteUser")]
-        public async Task<IActionResult> DeleteUser(string name)
+        [HttpDelete("{id}", Name = "DeleteUser")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
             try
             {
-                var dbUser = await _userService.GetUserByName(name);
+                var dbUser = await _userService.GetUserById(id);
                 if (dbUser == null)
                     return NotFound();
                 await _userService.DeleteUser(dbUser.Id);
-                return Ok("Barangay successfully deleted");
+                return Ok("User successfully deleted");
             }
             catch (Exception ex)
             {
