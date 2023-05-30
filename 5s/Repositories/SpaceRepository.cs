@@ -16,8 +16,8 @@ namespace _5s.Repositories
         public async Task<int> CreateSpace(Space space)
         {
             var sql = @"
-                INSERT INTO [dbo].[Spaces] ([Id], [Name])
-                VALUES (@Id, @Name);
+                INSERT INTO [dbo].[Spaces] ([Name], [Pictures], [RoomId])
+                VALUES (@Name @Pictures, @RoomId);
             ";
 
             using (var connection = _context.CreateConnection())

@@ -15,8 +15,8 @@ namespace _5s.Repositories
         public async Task<int> CreateRoom(Room room)
         {
             var sql = @"
-                INSERT INTO Rooms (RoomNumber, Picture, )
-                VALUES ( @RoomNumber, @Picture, );
+                INSERT INTO [dbo].[Rooms] ([BuildingId], [RoomNumber])
+                VALUES ( @BuildingId, @RoomNumber);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -29,7 +29,7 @@ namespace _5s.Repositories
         public async Task DeleteRoom(int id)
         {
             var sql = @"
-                DELETE FROM Rooms
+                DELETE FROM [dbo].[Rooms]
                 WHERE Id = @Id;
             ";
 
@@ -42,7 +42,7 @@ namespace _5s.Repositories
         public async Task<IEnumerable<Room>> GetAllRooms()
         {
             var sql = @"
-                SELECT * FROM Rooms;
+                SELECT * FROM [dbo].[Rooms];
             ";
 
             using (var connection = _context.CreateConnection())
@@ -54,7 +54,7 @@ namespace _5s.Repositories
         public async Task<Room> GetRoomById(int id)
         {
             var sql = @"
-                SELECT * FROM Rooms
+                SELECT * FROM [dbo].[Rooms]
                 WHERE Id = @Id;
             ";
 
@@ -67,7 +67,7 @@ namespace _5s.Repositories
         public async Task<Room> GetRoomByRoomNumber(string roomNumber)
         {
             var sql = @"
-                SELECT * FROM Rooms
+                SELECT * FROM [dbo].[Rooms]
                 WHERE RoomNumber = @RoomNumber;
             ";
 
@@ -80,9 +80,8 @@ namespace _5s.Repositories
         public async Task<int> UpdateRoom(int id, Room updatedRoom)
         {
             var sql = @"
-                UPDATE Rooms
+                UPDATE [dbo].[Rooms]
                 SET RoomNumber = @RoomNumber,
-                    Picture = @Picture,
                 WHERE Id = @Id;
             ";
 

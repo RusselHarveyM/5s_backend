@@ -1,8 +1,8 @@
-﻿CREATE TABLE Spaces [dbo].[Spaces](
+﻿CREATE TABLE [dbo].[Spaces](
     [Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [Name]    VARCHAR(255),
-    [Picture]    VARBINARY(MAX),
+    [Pictures]    VARBINARY(MAX),
+    [RoomId] INT, 
     PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Spaces] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Room] ([Id]) ON DELETE CASCADE,
-
+    CONSTRAINT [FK_Spaces] FOREIGN KEY ([RoomId]) REFERENCES [dbo].[Rooms] ([Id]) ON DELETE CASCADE,
 );

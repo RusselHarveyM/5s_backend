@@ -14,3 +14,11 @@ C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\obj\Debug\Model.xml
 C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\obj\Debug\refactor.xml
 C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\obj\Debug\postdeploy.sql
 C:\Users\Lenovo\Documents\vs_projects\Group7-5s-dev\5s\5sDB\obj\Debug\predeploy.sql
+C:\Users\Admin\Documents\5s_backend\5sDB\bin\Debug\5sDB.dacpac
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\5sDB.sqlproj.AssemblyReference.cache
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\Model.xml
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\refactor.xml
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\postdeploy.sql
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\predeploy.sql
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\_5sDB.dll
+C:\Users\Admin\Documents\5s_backend\5sDB\obj\Debug\_5sDB.pdb

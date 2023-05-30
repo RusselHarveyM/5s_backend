@@ -16,8 +16,8 @@ namespace _5s.Repositories
         public async Task<int> CreateRedTag(RedTag redTag)
         {
             var sql = @"
-                INSERT INTO RedTags (ItemName, Quantity)
-                VALUES (@ItemName, @Quantity);
+                INSERT INTO [dbo].[RedTags] ([ItemName], [Quantity], [RoomId])
+                VALUES (@ItemName, @Quantity, RoomId);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -30,7 +30,7 @@ namespace _5s.Repositories
         public async Task DeleteRedTag(int id)
         {
             var sql = @"
-                DELETE FROM RedTags
+                DELETE FROM [dbo].[RedTags]
                 WHERE Id = @Id;
             ";
 
@@ -43,7 +43,7 @@ namespace _5s.Repositories
         public async Task<IEnumerable<RedTag>> GetAllRedTags()
         {
             var sql = @"
-                SELECT * FROM RedTags;
+                SELECT * FROM [dbo].[RedTags];
             ";
 
             using (var connection = _context.CreateConnection())
@@ -55,7 +55,7 @@ namespace _5s.Repositories
         public async Task<RedTag> GetRedTagById(int id)
         {
             var sql = @"
-                SELECT * FROM RedTags
+                SELECT * FROM [dbo].[RedTags]
                 WHERE Id = @Id;
             ";
 
@@ -68,7 +68,7 @@ namespace _5s.Repositories
         public async Task<RedTag> GetRedTagByName(string name)
         {
             var sql = @"
-                SELECT * FROM RedTags
+                SELECT * FROM [dbo].[RedTags]
                 WHERE ItemName = @Name;
             ";
 
@@ -81,7 +81,7 @@ namespace _5s.Repositories
         public async Task<int> UpdateRedTag(int id, RedTag updatedRedTag)
         {
             var sql = @"
-                UPDATE RedTags
+                UPDATE [dbo].[RedTags]
                 SET ItemName = @ItemName,
                 Quantity = @Quantity
                 WHERE Id = @Id;

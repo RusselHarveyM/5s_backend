@@ -20,7 +20,7 @@ namespace _5s.Services
                 LastName = user.LastName,
                 Username = user.Username,
                 Password = user.Password,
-                IsAdmin = user.IsAdmin
+                Role = user.Role
             };
 
             user.Id = await _userRepository.CreateUser(userModel);

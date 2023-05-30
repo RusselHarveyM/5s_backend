@@ -16,8 +16,8 @@ namespace _5s.Repositories
         public async Task<int> CreateRatings(Ratings ratings)
         {
             var sql = @"
-                INSERT INTO Ratings (Sort, SetInOrder, Shine, Standerize, Sustain, Security)
-                VALUES (@Sort, @SetInOrder, @Shine, @Standerize, @Sustain, @Security);
+                INSERT INTO [dbo].[Ratings] ([Sort], [SetInOrder], [Shine], [Standerize], [Sustain], [Security], [isActive], [DateModified], [SpaceId])
+                VALUES (@Sort, @SetInOrder, @Shine, @Standerize, @Sustain, @Security, @isActive, @DateModified, @SpaceId);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -30,7 +30,7 @@ namespace _5s.Repositories
         public async Task DeleteRatings(int id)
         {
             var sql = @"
-                DELETE FROM Ratings
+                DELETE FROM [dbo].[Ratings]
                 WHERE Id = @Id;
             ";
 
@@ -43,7 +43,7 @@ namespace _5s.Repositories
         public async Task<IEnumerable<Ratings>> GetAllRatings()
         {
             var sql = @"
-                SELECT * FROM Ratings;
+                SELECT * FROM [dbo].[Ratings];
             ";
 
             using (var connection = _context.CreateConnection())
@@ -55,7 +55,7 @@ namespace _5s.Repositories
         public async Task<Ratings> GetRatingsById(int id)
         {
             var sql = @"
-                SELECT * FROM Ratings
+                SELECT * FROM [dbo].[Ratings]
                 WHERE Id = @Id;
             ";
 
@@ -68,7 +68,7 @@ namespace _5s.Repositories
         public async Task<Ratings> GetRatingsByName(string name)
         {
             var sql = @"
-                SELECT * FROM Ratings
+                SELECT * FROM [dbo].[Ratings]
                 WHERE Name = @Name;
             ";
 
@@ -81,13 +81,15 @@ namespace _5s.Repositories
         public async Task<int> UpdateRatings(int id, Ratings updatedRatings)
         {
             var sql = @"
-                UPDATE Ratings
+                UPDATE [dbo].[Ratings]
                 SET Sort = @Sort,
                     SetInOrder = @SetInOrder,
                     Shine = @Shine,
                     Standerize = @Standerize,
                     Sustain = @Sustain,
                     Security = @Security,
+                    isActive = @isActive,
+                    DateModified = @DateModified
                 WHERE Id = @Id;
             ";
 
