@@ -16,8 +16,8 @@ namespace _5s.Repositories
         public async Task<int> CreateUser(User user)
         {
             var sql = @"
-                INSERT INTO [dbo].[User] ([FirstName], [LastName], [Username], [Password], [Role], [Field])
-                VALUES (@FirstName, @LastName, @Username, @Password, @Role, @Field);
+                INSERT INTO [dbo].[User] ([FirstName], [LastName], [Username], [Password], [Role])
+                VALUES (@FirstName, @LastName, @Username, @Password, @Role);
                 SELECT CAST(SCOPE_IDENTITY() AS INT);
             ";
 
@@ -86,7 +86,6 @@ namespace _5s.Repositories
                 SET Username = @Username,
                     Password = @Password,
                     Role = @Role,
-                    Field = @Field
                 WHERE Id = @Id;
             ";
 
