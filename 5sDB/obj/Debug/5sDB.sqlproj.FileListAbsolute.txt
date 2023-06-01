@@ -10,3 +10,7 @@ C:\Users\rayma\5s_backend\5sDB\bin\Debug\_5sDB.pdb
 C:\Users\rayma\5s_backend\5sDB\obj\Debug\5sDB.sqlproj.AssemblyReference.cache
 C:\Users\rayma\5s_backend\5sDB\obj\Debug\_5sDB.dll
 C:\Users\rayma\5s_backend\5sDB\obj\Debug\_5sDB.pdb
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\Model.xml
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\refactor.xml
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\postdeploy.sql
+C:\Users\rayma\5s_backend\5sDB\obj\Debug\predeploy.sql

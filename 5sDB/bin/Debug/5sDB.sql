@@ -40,6 +40,15 @@ USE [$(DatabaseName)];
 
 
 GO
+PRINT N'Altering Table [dbo].[Rooms]...';
+
+
+GO
+ALTER TABLE [dbo].[Rooms]
+    ADD [Status] NVARCHAR (255) NULL;
+
+
+GO
 PRINT N'Update complete.';
 
 
