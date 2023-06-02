@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Spaces](
     [Id] INT NOT NULL IDENTITY(1,1), 
-    [Name]    VARCHAR(255),
+    [Name]    VARCHAR(255) UNIQUE,
     [Pictures]    VARBINARY(MAX),
     [RoomId] INT, 
     PRIMARY KEY CLUSTERED ([Id] ASC),
