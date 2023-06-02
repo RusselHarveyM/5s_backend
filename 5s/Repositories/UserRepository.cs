@@ -83,10 +83,10 @@ namespace _5s.Repositories
         {
             var sql = @"
                 UPDATE [dbo].[User]
-                SET Username = @Username,
-                    Password = @Password,
-                    Role = @Role,
-                WHERE Id = @Id;
+                SET FirstName = @FirstName,
+                    LastName = @LastName,
+                    Role = @Role
+                WHERE Id = @Id; 
             ";
 
             updatedUser.Id = id;

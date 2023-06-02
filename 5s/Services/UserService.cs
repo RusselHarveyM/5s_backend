@@ -52,8 +52,9 @@ namespace _5s.Services
         {
             var usermodel = new User
             {
-                Username = updatedUser.Username,
-                Password = updatedUser.Password,
+                FirstName = updatedUser.FirstName,
+                LastName = updatedUser.LastName,
+                Role = updatedUser.Role
             };
 
             var updateUser = await _userRepository.UpdateUser(id, usermodel);

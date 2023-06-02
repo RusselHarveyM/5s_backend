@@ -17,7 +17,8 @@ namespace _5s.Services
             {
                 BuildingId = room.BuildingId,
                 RoomNumber = room.RoomNumber,
-                Image = room.Image
+                Image = room.Image,
+                Status = room.Status
             };
 
             return await _roomRepository.CreateRoom(roomModel);
@@ -48,6 +49,7 @@ namespace _5s.Services
             {
                 RoomNumber = updatedRoom.RoomNumber,
                 Image = updatedRoom.Image,
+                Status = updatedRoom.Status
             };
 
             var update = await _roomRepository.UpdateRoom(id, UpdatedModel);
