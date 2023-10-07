@@ -586,3 +586,5 @@ _.msm
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+/5sDB/5sDB.dbmdl
+/5sDB/5sDB.jfm
