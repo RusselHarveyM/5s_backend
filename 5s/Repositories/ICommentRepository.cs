@@ -7,7 +7,7 @@ namespace _5s.Repositories
         /// <summary>
         /// Create Comment
         /// </summary>
-        /// <param name="comment">Comment Details</param>
+        /// <param name="comment">Comment Model</param>
         /// <returns>Return Id of newly created Comment</returns>
         public Task<int> CreateComment(Comment comment);
         /// <summary>

@@ -7,8 +7,8 @@ namespace _5s.Repositories
         /// <summary>
         /// Create a building
         /// </summary>
-        /// <param name="building">Building details</param>
-        /// <returns>Returns a building model</returns>
+        /// <param name="building">Building Model</param>
+        /// <returns>Returns Id of newly created building</returns>
         public Task<int> CreateBuilding(Building building);
         /// <summary>
         /// Gets all buidling
