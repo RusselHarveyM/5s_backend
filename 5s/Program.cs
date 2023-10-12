@@ -74,6 +74,7 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IRatingService, RatingService>();
     services.AddScoped<IRedTagService, RedTagService>();
     services.AddScoped<ISpaceService, SpaceService>();
+    services.AddScoped<ISpaceImageService, SpaceImageService>();
     services.AddScoped<IUserRepository, UserRepository>();
     services.AddScoped<IRoomRepository, RoomRepository>();
     services.AddScoped<IBuildingRepository, BuildingRepository>();
@@ -81,4 +82,5 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<ICommentRepository, CommentRepository>();
     services.AddScoped<IRedTagRepository, RedTagRepository>();
     services.AddScoped<ISpaceRepository, SpaceRepository>();
+    services.AddScoped<ISpaceImageRepository, SpaceImageRepository>();
 }

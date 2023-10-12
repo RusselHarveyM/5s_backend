@@ -15,6 +15,8 @@ namespace _5s.Controllers
         }
 
         [HttpPost(Name = "CreateRoom")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
         public async Task<IActionResult> CreateRoom([FromBody] Room room)
         {
             try
@@ -74,11 +76,11 @@ namespace _5s.Controllers
         }
 
         [HttpDelete("{name}", Name = "DeleteRoom")]
-        public async Task<IActionResult> DeleteRoom(string roomNumber)
+        public async Task<IActionResult> DeleteRoom(string name)
         {
             try
             {
-                var dbRoom = await _roomService.GetRoomByRoomNumber(roomNumber);
+                var dbRoom = await _roomService.GetRoomByRoomNumber(name);
                 if (dbRoom == null)
                     return NotFound();
                 await _roomService.DeleteRoom(dbRoom.Id);
