@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int SpaceId { get; set; } 
-        public byte[] Image { get; set; }
+        public byte[]? Image { get; set; }
         public DateTime UploadedDate { get; set; }
     }
 }
