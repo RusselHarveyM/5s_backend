@@ -18,14 +18,15 @@ namespace _5s.Repositories
             const string query = @"
                 INSERT INTO [dbo].[SpaceImage] ([SpaceId], [Image], [UploadedDate])
                 VALUES (@SpaceId, @Image, @UploadedDate);
-                SELECT CAST(SCOPE_IDENTITY() as int);
-            ";
+                SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
             using (var connection = _context.CreateConnection())
             {
+                // Use SELECT CAST(SCOPE_IDENTITY() AS INT) to retrieve the newly generated 'Id' value.
                 return await connection.ExecuteScalarAsync<int>(query, spaceImage);
             }
         }
+
 
         public async Task DeleteSpaceImage(int id)
         {
