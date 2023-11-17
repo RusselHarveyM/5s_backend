@@ -37,5 +37,21 @@ namespace _5sApiTest
             // Verify that the repository method was called once with the correct parameter
         }
 
+        [Fact]
+        public async Task DeleteBuilding_ValidId_CallsRepositoryDeleteBuilding()
+        {
+            // Arrange
+            int buildingId = 1; // Create a sample building ID
+            // Mocking repository behavior (setting up the DeleteBuilding method)
+            _buildingRepository.Setup(repo => repo.DeleteBuilding(buildingId)).Returns(Task.CompletedTask); 
+            // Assuming the DeleteBuilding method returns a Task or Task.CompletedTask
+
+            // Act
+            await _buildingService.DeleteBuilding(buildingId);
+
+            // Assert
+            _buildingRepository.Verify(repo => repo.DeleteBuilding(buildingId), Times.Once);
+            // Verify that the repository method was called once with the correct parameter
+        }
     }
 }
