@@ -65,8 +65,7 @@ namespace _5sApiTest
             };
 
             // Mocking repository behavior
-            _buildingRepository.Setup(repo => repo.GetAllBuildings())
-                               .ReturnsAsync(mockBuildings);
+            _buildingRepository.Setup(repo => repo.GetAllBuildings()).ReturnsAsync(mockBuildings);
 
             // Act
             var result = await _buildingService.GetAllBuilding();
@@ -75,6 +74,24 @@ namespace _5sApiTest
             Assert.NotNull(result); // Check if the returned result is not null
             Assert.Equal(mockBuildings, result); // Check if the returned result matches the expected result
             _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+            // Verify that the repository method was called once with the correct parameter
+        }
+
+        [Fact]
+        public async Task GetBuildingById_ReturnsBuilding()
+        {
+            // Arrange
+            int buildingId = 1; // A sample building ID
+            Building mockBuilding = new Building { Id = buildingId, BuildingName = "NGE" };
+            _buildingRepository.Setup(repo => repo.GetBuildingById(buildingId)).ReturnsAsync(mockBuilding);
+
+            // Act
+            var result = await _buildingService.GetBuildingById(buildingId);
+
+            // Assert
+            Assert.NotNull(result); // Check if the returned building is not null
+            Assert.Equal(mockBuilding, result); // Check if the returned building matches the mocked building
+            _buildingRepository.Verify(repo => repo.GetBuildingById(buildingId), Times.Once);
             // Verify that the repository method was called once with the correct parameter
         }
     }
