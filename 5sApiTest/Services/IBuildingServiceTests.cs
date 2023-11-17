@@ -53,5 +53,29 @@ namespace _5sApiTest
             _buildingRepository.Verify(repo => repo.DeleteBuilding(buildingId), Times.Once);
             // Verify that the repository method was called once with the correct parameter
         }
+
+        [Fact]
+        public async Task GetAllBuilding_ReturnsBuildings()
+        {
+            // Arrange
+            IEnumerable<Building> mockBuildings = new List<Building>
+            {
+                new Building { Id = 1, BuildingName = "NGE" },
+                new Building { Id = 2, BuildingName = "GLE" },
+            };
+
+            // Mocking repository behavior
+            _buildingRepository.Setup(repo => repo.GetAllBuildings())
+                               .ReturnsAsync(mockBuildings);
+
+            // Act
+            var result = await _buildingService.GetAllBuilding();
+
+            // Assert
+            Assert.NotNull(result); // Check if the returned result is not null
+            Assert.Equal(mockBuildings, result); // Check if the returned result matches the expected result
+            _buildingRepository.Verify(repo => repo.GetAllBuildings(), Times.Once);
+            // Verify that the repository method was called once with the correct parameter
+        }
     }
 }
