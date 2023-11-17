@@ -94,5 +94,24 @@ namespace _5sApiTest
             _buildingRepository.Verify(repo => repo.GetBuildingById(buildingId), Times.Once);
             // Verify that the repository method was called once with the correct parameter
         }
+
+        [Fact]
+        public async Task GetBuildingByName_ReturnsBuilding()
+        {
+            // Arrange
+            string buildingName = "NGE";
+            Building mockBuilding = new Building { Id = 1, BuildingName = buildingName };
+            // A sample building with the given building name
+            _buildingRepository.Setup(repo => repo.GetBuildingByName(buildingName)).ReturnsAsync(mockBuilding);
+
+            // Act
+            var result = await _buildingService.GetBuildingByName(buildingName);
+
+            // Assert
+            Assert.NotNull(result); // Check if the returned building is not null
+            Assert.Equal(mockBuilding, result); // Check if the returned building matches the mocked building
+            _buildingRepository.Verify(repo => repo.GetBuildingByName(buildingName), Times.Once);
+            // Verify that the repository method was called once with the correct parameter
+        }
     }
 }
