@@ -60,8 +60,8 @@ namespace _5sApiTest
             // Arrange
             IEnumerable<Building> mockBuildings = new List<Building>
             {
-                new Building { Id = 1, BuildingName = "NGE" },
-                new Building { Id = 2, BuildingName = "GLE" },
+                new Building { Id = 1, BuildingName = "Nicholas Gregorio Escario" },
+                new Building { Id = 2, BuildingName = "Gregorio L. Escario" },
             };
 
             // Mocking repository behavior
@@ -82,7 +82,7 @@ namespace _5sApiTest
         {
             // Arrange
             int buildingId = 1; // A sample building ID
-            Building mockBuilding = new Building { Id = buildingId, BuildingName = "NGE" };
+            Building mockBuilding = new Building { Id = buildingId, BuildingName = "Nicholas Gregorio Escario" };
             _buildingRepository.Setup(repo => repo.GetBuildingById(buildingId)).ReturnsAsync(mockBuilding);
 
             // Act
