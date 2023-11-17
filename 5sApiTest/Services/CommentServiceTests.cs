@@ -7,7 +7,7 @@ using _5s.Repositories;
 using _5s.Services;
 using _5s.Model;
 
-namespace _5sApiTest
+namespace _5sApiTest.Services
 {
     public class CommentServiceTests
     {
