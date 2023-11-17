@@ -113,5 +113,32 @@ namespace _5sApiTest
             _buildingRepository.Verify(repo => repo.GetBuildingByName(buildingName), Times.Once);
             // Verify that the repository method was called once with the correct parameter
         }
+
+        [Fact]
+        public async Task UpdateBuilding_ValidId_ReturnsUpdatedBuildingId()
+        {
+            // Arrange
+            int buildingId = 1; // A sample building ID
+            byte[] updatedImage = new byte[] { 0x1, 0x2, 0x3 }; // A sample image byte array
+            Building updatedBuilding = new Building
+            {
+                Id = buildingId,
+                BuildingName = "Updated Name",
+                BuildingCode = "Updated Code",
+                Image = updatedImage // Assign the updated image byte array
+            };
+
+            // Mocking repository behavior
+            _buildingRepository.Setup(repo => repo.UpdateBuilding(buildingId, It.IsAny<Building>())).ReturnsAsync(1);
+            // Assuming 1 is the building ID returned upon successful update
+
+            // Act
+            int result = await _buildingService.UpdateBuilding(buildingId, updatedBuilding);
+
+            // Assert
+            Assert.Equal(1, result); // Check if the returned result matches the expected result
+            _buildingRepository.Verify(repo => repo.UpdateBuilding(buildingId, It.IsAny<Building>()),Times.Once);
+            // Verify that the repository method was called once with the correct ID and updated building object
+        }
     }
 }
