@@ -25,17 +25,17 @@ namespace _5sApiTest
             var building = new Building(); // Create a sample building object
 
             // Mocking repository behavior
-            _buildingRepository.Setup(repo => repo.CreateBuilding(It.IsAny<Building>()))
-                               .ReturnsAsync(1); // Assuming 1 is the building ID returned upon successful creation
+            _buildingRepository.Setup(repo => repo.CreateBuilding(It.IsAny<Building>())).ReturnsAsync(1); 
+            // Assuming 1 is the building ID returned upon successful creation
 
             // Act
             int buildingId = await _buildingService.CreateBuilding(building);
 
             // Assert
             Assert.Equal(1, buildingId); // Check if the returned ID matches the expected ID
-            _buildingRepository.Verify(repo => repo.CreateBuilding(It.IsAny<Building>()), Times.Once); // Verify that the repository method was called once with the correct parameter
+            _buildingRepository.Verify(repo => repo.CreateBuilding(It.IsAny<Building>()), Times.Once); 
+            // Verify that the repository method was called once with the correct parameter
         }
 
-        
     }
 }
