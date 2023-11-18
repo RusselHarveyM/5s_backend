@@ -21,21 +21,22 @@ namespace _5sApiTest.Controllers
             _spaceController = new SpaceController(_spaceServiceMock.Object);
         }
 
-        /*[Fact]
+        [Fact]
         public async Task CreateSpace_ValidSpace_ReturnsCreatedAtRouteResult()
         {
             // Arrange
-            var space = new Space { Name = "Meeting Room", Pictures = new List<byte[]>(), RoomId = 1 };
+            var space = new Space { Id = 1, Name = "Meeting Room", Pictures = new List<byte[]>(), RoomId = 1 };
             _spaceServiceMock.Setup(service => service.CreateSpace(It.IsAny<Space>())).ReturnsAsync(1);
+            var controller = new SpaceController(_spaceServiceMock.Object);
 
             // Act
-            var result = await _spaceController.CreateSpace(space) as CreatedAtRouteResult;
+            var result = await controller.CreateSpace(space) as CreatedAtRouteResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal("GetSpaceById", result.RouteName);
             Assert.Equal(1, result.RouteValues["id"]);
-        }*/
+        }
 
         [Fact]
         public async Task GetSpace_ReturnsOkObjectResult()
