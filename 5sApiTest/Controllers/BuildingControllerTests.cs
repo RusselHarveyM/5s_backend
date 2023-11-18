@@ -124,15 +124,18 @@ namespace _5sApiTest.Controllers
         {
             // Arrange
             var buildingId = 1; // Replace with an existing building ID
-            var existingBuilding = new Building { 
+            var existingBuilding = new Building
+            {
                 Id = buildingId,
                 BuildingName = "Gregorio L. Escario",
                 BuildingCode = "NGE"
             };
-            var updatedBuilding = new Building { 
+            var updatedBuilding = new Building
+            {
                 Id = buildingId,
                 BuildingName = "Gregorio L. Escario",
-                BuildingCode = "GLE" };
+                BuildingCode = "GLE"
+            };
 
             _buildingServiceMock.Setup(service => service.GetBuildingById(buildingId)).ReturnsAsync(existingBuilding);
             _buildingServiceMock.Setup(service => service.UpdateBuilding(buildingId, updatedBuilding)).ReturnsAsync(1);
@@ -193,5 +196,58 @@ namespace _5sApiTest.Controllers
             Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
         }
 
+        [Fact]
+        public async Task DeleteBuilding_ExistingBuilding_ReturnsOkResult()
+        {
+            // Arrange
+            var buildingName = "Gregorio L. Escario";
+            var existingBuilding = new Building { Id = 1, BuildingName = buildingName };
+            _buildingServiceMock.Setup(service => service.GetBuildingByName(buildingName)).ReturnsAsync(existingBuilding);
+
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteBuilding(buildingName) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.Equal("Building successfully deleted", result.Value);
+        }
+
+        [Fact]
+        public async Task DeleteBuilding_NonExistingBuilding_ReturnsNotFound()
+        {
+            // Arrange
+            var nonExistingBuildingName = "SpaceX";
+            _buildingServiceMock.Setup(service => service.GetBuildingByName(nonExistingBuildingName)).ReturnsAsync((Building)null);
+
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteBuilding(nonExistingBuildingName) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteBuilding_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            var buildingName = "Nicholas L. Escario";
+            _buildingServiceMock.Setup(service => service.GetBuildingByName(buildingName)).ThrowsAsync(new Exception());
+
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteBuilding(buildingName);
+
+            // Assert
+            Assert.IsType<ObjectResult>(result);
+            var objectResult = result as ObjectResult;
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+        }
     }
 }
