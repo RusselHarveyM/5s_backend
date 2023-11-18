@@ -92,7 +92,7 @@ namespace _5sApiTest.Controllers
             // Further assertions based on the expected user content or structure
         }
 
-        /*[Fact]
+        [Fact]
         public async Task UpdateUser_ExistingUserIdAndValidUser_ReturnsOkResultWithUpdatedUser()
         {
             // Arrange
@@ -115,8 +115,8 @@ namespace _5sApiTest.Controllers
             _userServiceMock.Setup(service => service.GetUserById(1))
                 .ReturnsAsync(existingUser);
 
-            _userServiceMock.Setup(service => service.UpdateUser(1, It.IsAny<User>()))
-                .ReturnsAsync(updatedUser);
+            _userServiceMock.Setup(service => service.UpdateUser(1, updatedUser))
+                .ReturnsAsync(1);
 
             // Act
             var result = await _userController.UpdateUser(1, updatedUser) as OkObjectResult;
@@ -125,8 +125,8 @@ namespace _5sApiTest.Controllers
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.NotNull(result.Value);
-            Assert.IsType<User>(result.Value);
-        }*/
+            Assert.IsType<int>(result.Value);
+        }
 
         [Fact]
         public async Task DeleteUser_ExistingUserId_ReturnsOkResultWithSuccessMessage()
