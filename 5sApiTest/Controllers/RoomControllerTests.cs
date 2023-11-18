@@ -132,6 +132,36 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
+        public async Task UpdateRoom_ExistingRoom_ReturnsOkObjectResult()
+        {
+            // Arrange
+            int roomId = 1;
+            var room = new Room
+            {
+                Id = 1,
+                BuildingId = 1,
+                RoomNumber = "101",
+                Image = new byte[] { 0x12, 0x34, 0x56, 0x78 },
+                Status = "Green"
+            };
+
+            _roomServiceMock.Setup(service => service.GetRoomById(roomId))
+                            .ReturnsAsync(room);
+
+            _roomServiceMock.Setup(service => service.UpdateRooms(roomId, room))
+                            .ReturnsAsync(1);
+
+            // Act
+            var result = await _roomController.UpdateRoom(roomId, room) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Value);
+            Assert.IsType<int>(result.Value);
+        }
+
+        [Fact]
         public async Task UpdateRoom_ValidRoom_ReturnsNoContentResult()
         {
             // Arrange
@@ -146,14 +176,13 @@ namespace _5sApiTest.Controllers
             };
 
             _roomServiceMock.Setup(service => service.UpdateRooms(roomId, room))
-                .ReturnsAsync(1);
+                            .ReturnsAsync(1);
 
             // Act
-            var result = await _roomController.UpdateRoom(roomId, room) as NoContentResult;
+            var actionResult = await _roomController.UpdateRoom(roomId, room);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(204, result.StatusCode);
+            Assert.IsType<NoContentResult>(actionResult);
         }
 
         [Fact]
