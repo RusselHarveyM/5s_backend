@@ -50,7 +50,7 @@ namespace _5sApiTest.Controllers
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.NotNull(result.Value);
-            Assert.IsType<User>(result.Value);
+            Assert.IsType<int>(result.Value);
         }
 
         [Fact]
