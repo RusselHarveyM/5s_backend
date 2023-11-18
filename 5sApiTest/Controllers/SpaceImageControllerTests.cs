@@ -1,6 +1,4 @@
-﻿// Import necessary namespaces
-
-using _5s.Controllers;
+﻿using _5s.Controllers;
 using _5s.Model;
 using _5s.Services;
 using Microsoft.AspNetCore.Http;
