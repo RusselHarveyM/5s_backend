@@ -16,18 +16,20 @@ namespace _5sApiTest.Controllers
         {
             _spaceImageController = new SpaceImageController(_spaceImageServiceMock.Object);
         }
-
+        
         [Fact]
-        public async Task UploadSpaceImage_ValidData_ReturnsOkResult()
+        public async Task UploadSpaceImage_ValidInput_ReturnsOkResult()
         {
             // Arrange
-            int spaceId = 1;
-            var fileMock = new Mock<IFormFile>();
-            _spaceImageServiceMock.Setup(service => service.CreateSpaceImage(It.IsAny<SpaceImage>()))
-                .ReturnsAsync(1);
+            var spaceImageServiceMock = new Mock<ISpaceImageService>();
+            var spaceImageController = new SpaceImageController(spaceImageServiceMock.Object);
+
+            // Simulate a valid form file
+            var formFileMock = new Mock<IFormFile>();
+            formFileMock.Setup(f => f.Length).Returns(10); // Set file length
 
             // Act
-            var result = await _spaceImageController.UploadSpaceImage(spaceId, fileMock.Object) as ObjectResult;
+            var result = await spaceImageController.UploadSpaceImage(1, formFileMock.Object) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
