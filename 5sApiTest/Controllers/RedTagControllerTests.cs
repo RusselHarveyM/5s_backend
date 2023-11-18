@@ -76,22 +76,60 @@ namespace _5sApiTest.Controllers
             Assert.Equal(redTag.Id, redTagResult.Id);
         }
 
-        /*[Fact]
-        public async Task UpdateRedTag_ValidIdAndRedTag_ReturnsOkResultWithUpdatedRedTagId()
+        [Fact]
+        public async Task UpdateRedTag_ExistingId_ReturnsOkResultWithUpdatedRedTag()
         {
             // Arrange
             var redTagId = 1;
-            var redTag = new RedTag { Id = redTagId, ItemName = "Updated Item", Quantity = 8, RoomId = 2 };
-            var updatedRedTagId = 1;
-            _redTagServiceMock.Setup(service => service.UpdateRedTag(redTagId, redTag)).ReturnsAsync(updatedRedTagId);
+            var existingRedTag = new RedTag
+            {
+                Id = 1,
+                ItemName = "Existing Item",
+                Quantity = 5,
+                RoomId = 2
+            };
+            var updatedRedTag = new RedTag
+            {
+                Id = redTagId,
+                ItemName = "Updated Item",
+                Quantity = 8,
+                RoomId = 2
+            };
+
+            _redTagServiceMock.Setup(service => service.GetRedTagById(redTagId)).ReturnsAsync(existingRedTag);
+            _redTagServiceMock.Setup(service => service.UpdateRedTag(redTagId, updatedRedTag)).ReturnsAsync(1);
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
 
             // Act
-            var result = await _redTagController.UpdateRedTag(redTagId, redTag) as OkObjectResult;
+            var actionResult = await controller.UpdateRedTag(redTagId, updatedRedTag) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(actionResult);
+
+            var updatedRedTagResult = actionResult.Value as int?;
+            Assert.NotNull(updatedRedTagResult);
+            Assert.Equal(1, updatedRedTagResult);
+        }
+
+        [Fact]
+        public async Task UpdateRedTag_NonExistingId_ReturnsNotFound()
+        {
+            // Arrange
+            var redTagId = 100;
+            var updatedRedTag = new RedTag { Id = redTagId, ItemName = "Updated Item", Quantity = 8, RoomId = 2 };
+
+            _redTagServiceMock.Setup(service => service.GetRedTagById(redTagId)).ReturnsAsync((RedTag)null);
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateRedTag(redTagId, updatedRedTag) as NotFoundResult;
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(updatedRedTagId, result.Value);
-        }*/
+            Assert.Equal(404, result.StatusCode);
+        }
 
         [Fact]
         public async Task DeleteRedTag_ValidName_DeletesRedTag()
