@@ -118,5 +118,80 @@ namespace _5sApiTest.Controllers
             var statusCode = (result as ObjectResult)?.StatusCode;
             Assert.Equal(StatusCodes.Status500InternalServerError, statusCode);
         }
+
+        [Fact]
+        public async Task UpdateBuilding_ExistingBuilding_ReturnsOkResult()
+        {
+            // Arrange
+            var buildingId = 1; // Replace with an existing building ID
+            var existingBuilding = new Building { 
+                Id = buildingId,
+                BuildingName = "Gregorio L. Escario",
+                BuildingCode = "NGE"
+            };
+            var updatedBuilding = new Building { 
+                Id = buildingId,
+                BuildingName = "Gregorio L. Escario",
+                BuildingCode = "GLE" };
+
+            _buildingServiceMock.Setup(service => service.GetBuildingById(buildingId)).ReturnsAsync(existingBuilding);
+            _buildingServiceMock.Setup(service => service.UpdateBuilding(buildingId, updatedBuilding)).ReturnsAsync(1);
+
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateBuilding(buildingId, updatedBuilding) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.Equal(1, result.Value);
+        }
+
+        [Fact]
+        public async Task UpdateBuilding_NonExistingBuilding_ReturnsNotFound()
+        {
+            // Arrange
+            var buildingId = 100; // Replace with a non-existing building ID
+            var updatedBuilding = new Building { Id = buildingId, BuildingName = "Updated Building", BuildingCode = "ZZZ" };
+
+            _buildingServiceMock.Setup(service => service.GetBuildingById(buildingId)).ReturnsAsync((Building)null);
+
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateBuilding(buildingId, updatedBuilding) as StatusCodeResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateBuilding_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            var buildingId = 1; // An existing building ID
+            var updatedBuilding = new Building
+            {
+                Id = buildingId,
+                BuildingName = "Updated Building",
+                BuildingCode = "UB"
+            };
+
+            _buildingServiceMock.Setup(service => service.GetBuildingById(buildingId)).ReturnsAsync(new Building());
+            _buildingServiceMock.Setup(service => service.UpdateBuilding(buildingId, updatedBuilding)).ThrowsAsync(new Exception());
+
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateBuilding(buildingId, updatedBuilding);
+
+            // Assert
+            Assert.IsType<ObjectResult>(result);
+            var objectResult = result as ObjectResult;
+            Assert.Equal(StatusCodes.Status500InternalServerError, objectResult.StatusCode);
+        }
+
     }
 }
