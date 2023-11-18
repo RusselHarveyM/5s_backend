@@ -162,7 +162,7 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task UpdateRoom_ValidRoom_ReturnsNoContentResult()
+        public async Task UpdateRoom_NonExistingRoom_ReturnsNotFound()
         {
             // Arrange
             int roomId = 1;
@@ -172,17 +172,18 @@ namespace _5sApiTest.Controllers
                 BuildingId = 1,
                 RoomNumber = "101",
                 Image = new byte[] { 0x12, 0x34, 0x56, 0x78 },
-                Status = "Active"
+                Status = "Green"
             };
 
-            _roomServiceMock.Setup(service => service.UpdateRooms(roomId, room))
-                            .ReturnsAsync(1);
+            _roomServiceMock.Setup(service => service.GetRoomById(roomId))
+                            .ReturnsAsync((Room)null); // Simulating non-existing room
 
             // Act
-            var actionResult = await _roomController.UpdateRoom(roomId, room);
+            var result = await _roomController.UpdateRoom(roomId, room) as NotFoundResult;
 
             // Assert
-            Assert.IsType<NoContentResult>(actionResult);
+            Assert.NotNull(result);
+            Assert.Equal(404, result.StatusCode);
         }
 
         [Fact]
