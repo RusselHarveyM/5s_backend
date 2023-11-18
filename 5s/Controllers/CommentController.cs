@@ -17,6 +17,11 @@ namespace _5s.Controllers
         [HttpPost(Name = "CreateComment")]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var newComment = await _commentService.CreateComment(comment);
