@@ -50,7 +50,7 @@ namespace _5s.Controllers
                 var room = await _roomService.GetRoomById(id);
                 if (room == null)
                 {
-                    return NotFound(); // Return a NotFoundResult explicitly when the room is not found
+                    return NotFound();
                 }
                 return Ok(room);
             }

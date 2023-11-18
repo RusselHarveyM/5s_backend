@@ -107,16 +107,27 @@ namespace _5sApiTest.Controllers
         public async Task GetRoom_NonExistingRoomId_ReturnsNotFound()
         {
             // Arrange
-            int roomId = 999;
+            int nonExistingId = 2;
+            var rooms = new List<Room>
+            {
+                new Room
+                {
+                    Id = 1,
+                    BuildingId = 1,
+                    RoomNumber = "101",
+                    Image = new byte[] { 0x12, 0x34, 0x56, 0x78 },
+                    Status = "Active"
+                }
+            };
 
-            _roomServiceMock.Setup(service => service.GetRoomById(roomId))
-                .ReturnsAsync((Room)null);
+            _roomServiceMock.Setup(service => service.GetRoomById(nonExistingId)).ReturnsAsync((Room)null);
+            var controller = new RoomController(_roomServiceMock.Object);
 
             // Act
-            var result = await _roomController.GetRoom(roomId) as NotFoundResult;
+            var actionResult = await controller.GetRoom(nonExistingId);
 
             // Assert
-            Assert.NotNull(result);
+            var result = Assert.IsType<NotFoundResult>(actionResult);
             Assert.Equal(404, result.StatusCode);
         }
 
