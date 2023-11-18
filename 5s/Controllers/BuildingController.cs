@@ -69,6 +69,10 @@ namespace _5s.Controllers
             try
             {
                 var building = await _buildingService.GetAllBuilding();
+                if (building == null || !building.Any())
+                {
+                    return NoContent();
+                }
                 return Ok(building);
             }
             catch (Exception ex)
