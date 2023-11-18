@@ -23,10 +23,9 @@ namespace _5sApiTest.Controllers
             // Arrange
             var spaceImageServiceMock = new Mock<ISpaceImageService>();
             var spaceImageController = new SpaceImageController(spaceImageServiceMock.Object);
-
-            // Simulate a valid form file
+            
             var formFileMock = new Mock<IFormFile>();
-            formFileMock.Setup(f => f.Length).Returns(10); // Set file length
+            formFileMock.Setup(f => f.Length).Returns(10);
 
             // Act
             var result = await spaceImageController.UploadSpaceImage(1, formFileMock.Object) as ObjectResult;
@@ -40,17 +39,39 @@ namespace _5sApiTest.Controllers
         public async Task GetSpaceImages_ExistingSpaceId_ReturnsOkResultWithImages()
         {
             // Arrange
-            int spaceId = 1;
-            var fakeSpaceImages = new List<SpaceImage>();
-            _spaceImageServiceMock.Setup(service => service.GetAllSpaceImagesBySpaceId(spaceId))
-                .ReturnsAsync(fakeSpaceImages);
+            var spaceId = 1;
+            var expectedImages = new List<SpaceImage>
+            {
+                new SpaceImage
+                {
+                    Id = 1,
+                    SpaceId = 1,
+                    Image = new byte[] { 0x1, 0x2, 0x3 },
+                    UploadedDate = DateTime.UtcNow
+                },
+                new SpaceImage
+                {
+                    Id = 2,
+                    SpaceId = 1,
+                    Image = new byte[] { 0x1, 0x2, 0x3 },
+                    UploadedDate = DateTime.UtcNow
+                },
+            };
+
+            var spaceImageServiceMock = new Mock<ISpaceImageService>();
+            spaceImageServiceMock.Setup(service => service.GetAllSpaceImagesBySpaceId(spaceId))
+                .ReturnsAsync(expectedImages);
+
+            var controller = new SpaceImageController(spaceImageServiceMock.Object);
 
             // Act
-            var result = await _spaceImageController.GetSpaceImages(spaceId) as ObjectResult;
+            var result = await controller.GetSpaceImages(spaceId) as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Value);
+            Assert.IsType<List<SpaceImage>>(result.Value);
         }
 
         [Fact]
