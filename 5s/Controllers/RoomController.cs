@@ -48,6 +48,10 @@ namespace _5s.Controllers
             try
             {
                 var room = await _roomService.GetRoomById(id);
+                if (room == null)
+                {
+                    return NotFound(); // Return a NotFoundResult explicitly when the room is not found
+                }
                 return Ok(room);
             }
             catch (Exception ex)
