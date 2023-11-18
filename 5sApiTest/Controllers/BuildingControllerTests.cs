@@ -65,5 +65,58 @@ namespace _5sApiTest.Controllers
             Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
 
+        [Fact]
+        public async Task GetBuilding_ReturnsBuildings()
+        {
+            // Arrange
+            var buildings = new List<Building>
+            {
+                new Building { Id = 1, BuildingName = "Gregorio L. Escario", BuildingCode = "GLE" },
+                new Building { Id = 2, BuildingName = "Nicholas Gregorio Escario", BuildingCode = "NGE" },
+            };
+
+            _buildingServiceMock.Setup(service => service.GetAllBuilding()).ReturnsAsync(buildings);
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.GetBuilding() as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.Equal(buildings, result.Value);
+        }
+
+        [Fact]
+        public async Task GetBuilding_NoBuildings_ReturnsNoContent()
+        {
+            // Arrange
+            var emptyBuildingList = new List<Building>(); // Empty list
+            _buildingServiceMock.Setup(service => service.GetAllBuilding()).ReturnsAsync(emptyBuildingList);
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.GetBuilding() as StatusCodeResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetBuilding_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            _buildingServiceMock.Setup(service => service.GetAllBuilding()).ThrowsAsync(new Exception());
+            var controller = new BuildingController(_buildingServiceMock.Object);
+
+            // Act
+            var result = await controller.GetBuilding();
+
+            // Assert
+            Assert.IsType<ObjectResult>(result);
+            var statusCode = (result as ObjectResult)?.StatusCode;
+            Assert.Equal(StatusCodes.Status500InternalServerError, statusCode);
+        }
     }
 }
