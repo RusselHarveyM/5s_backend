@@ -53,6 +53,10 @@ namespace _5s.Controllers
             try
             {
                 var comment = await _commentService.GetCommentById(id);
+                if (comment == null)
+                {
+                    return NotFound();
+                }
                 return Ok(comment);
             }
             catch (Exception ex)
