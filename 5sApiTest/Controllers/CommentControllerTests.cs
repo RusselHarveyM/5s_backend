@@ -90,5 +90,64 @@ namespace _5sApiTest.Controllers
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
+
+        [Fact]
+        public async Task GetComment_ReturnsOkResult()
+        {
+            // Arrange
+            var comments = new List<Comment>
+            {
+                new Comment {
+                    Id = 1,
+                    Sort = "1",
+                    SetInOrder = "1",
+                    Shine = "1",
+                    Standarize = "1",
+                    Sustain = "1",
+                    Security = "1",
+                    isActive = true,
+                    DateModified = DateTime.Now,
+                    RatingId = 1
+                },
+                new Comment {
+                    Id = 2,
+                    Sort = "test",
+                    SetInOrder = "test",
+                    Shine = "test",
+                    Standarize = "test",
+                    Sustain = "test",
+                    Security = "test",
+                    isActive = true,
+                    DateModified = DateTime.Now,
+                    RatingId = 1
+                }
+            };
+            _commentServiceMock.Setup(service => service.GetAllComment()).ReturnsAsync(comments);
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.GetComment() as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.IsType<List<Comment>>(result.Value); // Adjust the type according to your actual return type
+        }
+
+        [Fact]
+        public async Task GetComment_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            _commentServiceMock.Setup(service => service.GetAllComment()).ThrowsAsync(new Exception("Something went wrong"));
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.GetComment() as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
     }
 }
