@@ -19,6 +19,10 @@ namespace _5s.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 var newRating = await _ratingsService.CreateRatings(ratings);
                 return CreatedAtRoute("GetRatingsById", new { id = ratings.Id }, newRating);
             }
