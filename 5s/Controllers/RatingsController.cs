@@ -52,6 +52,10 @@ namespace _5s.Controllers
             try
             {
                 var rating = await _ratingsService.GetRatingsById(id);
+                if (rating == null)
+                {
+                    return NotFound();
+                }
                 return Ok(rating);
             }
             catch (Exception ex)
