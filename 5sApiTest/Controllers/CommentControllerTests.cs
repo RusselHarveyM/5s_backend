@@ -211,5 +211,176 @@ namespace _5sApiTest.Controllers
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
+
+        [Fact]
+        public async Task UpdateComment_ExistingComment_ReturnsOkResult()
+        {
+            // Arrange
+            var commentId = 1;
+            var existingComment = new Comment
+            {
+                Id = commentId,
+                Sort = "test",
+                SetInOrder = "test",
+                Shine = "test",
+                Standarize = "test",
+                Sustain = "test",
+                Security = "test",
+                isActive = true,
+                DateModified = DateTime.Now,
+                RatingId = 1
+            };
+            var updatedComment = new Comment
+            {
+                Id = commentId,
+                Sort = "updated test",
+                SetInOrder = "updated test",
+                Shine = "updated test",
+                Standarize = "updated test",
+                Sustain = "updated test",
+                Security = "updated test",
+                isActive = false,
+                DateModified = DateTime.Now,
+                RatingId = 2
+            };
+
+            _commentServiceMock.Setup(service => service.GetCommentById(commentId)).ReturnsAsync(existingComment);
+            _commentServiceMock.Setup(service => service.UpdateComment(commentId, updatedComment)).ReturnsAsync(1);
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateComment(commentId, updatedComment) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.Equal(1, result.Value);
+        }
+
+        [Fact]
+        public async Task UpdateComment_NonExistingComment_ReturnsNotFound()
+        {
+            // Arrange
+            var commentId = 999;
+            var updatedComment = new Comment
+            {
+                Id = commentId,
+                Sort = "updated test",
+                SetInOrder = "updated test",
+                Shine = "updated test",
+                Standarize = "updated test",
+                Sustain = "updated test",
+                Security = "updated test",
+                isActive = false,
+                DateModified = DateTime.Now,
+                RatingId = 2
+            };
+
+            _commentServiceMock.Setup(service => service.GetCommentById(commentId)).ReturnsAsync((Comment)null);
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateComment(commentId, updatedComment) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task UpdateComment_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            var commentId = 1; // Replace with an existing comment ID
+            var updatedComment = new Comment
+            {
+                Id = commentId,
+                Sort = "updated test",
+                SetInOrder = "updated test",
+                Shine = "updated test",
+                Standarize = "updated test",
+                Sustain = "updated test",
+                Security = "updated test",
+                isActive = false,
+                DateModified = DateTime.Now,
+                RatingId = 2
+            };
+
+            _commentServiceMock.Setup(service => service.GetCommentById(commentId)).ThrowsAsync(new Exception());
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateComment(commentId, updatedComment) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteComment_ExistingComment_ReturnsOkResult()
+        {
+            // Arrange
+            var commentId = 1; // Replace with an existing comment ID
+            var existingComment = new Comment
+            {
+                Id = commentId,
+                Sort = "test",
+                SetInOrder = "test",
+                Shine = "test",
+                Standarize = "test",
+                Sustain = "test",
+                Security = "test",
+                isActive = true,
+                DateModified = DateTime.Now,
+                RatingId = 1
+            };
+
+            _commentServiceMock.Setup(service => service.GetCommentById(commentId)).ReturnsAsync(existingComment);
+            _commentServiceMock.Setup(service => service.DeleteComment(commentId)).Returns(Task.CompletedTask);
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteComment(commentId) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.Equal("Comment successfully deleted", result.Value);
+        }
+
+        [Fact]
+        public async Task DeleteComment_NonExistingComment_ReturnsNotFound()
+        {
+            // Arrange
+            var commentId = 999; // Replace with a non-existing comment ID
+
+            _commentServiceMock.Setup(service => service.GetCommentById(commentId)).ReturnsAsync((Comment)null);
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteComment(commentId) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+        
+        [Fact]
+        public async Task DeleteComment_ExceptionThrown_ReturnsInternalServerError()
+        {
+            // Arrange
+            var commentId = 1;
+
+            _commentServiceMock.Setup(service => service.GetCommentById(commentId)).ThrowsAsync(new Exception());
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteComment(commentId) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
     }
 }
