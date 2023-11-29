@@ -66,6 +66,29 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
+        public async Task CreateBuilding_InvalidData_ReturnsBadRequest()
+        {
+            // Arrange
+            var building = new Building
+            {
+                // Invalid building data or missing required fields
+                // For example, in this case, setting a required field (BuildingName) to null
+                Id = 1,
+                BuildingName = null,
+                BuildingCode = "GLE",
+                Image = new byte[] { 0x12, 0x34, 0x56, 0x78 }
+            };
+            _buildingController.ModelState.AddModelError("BuildingName", "Building name is required");
+
+            // Act
+            var result = await _buildingController.CreateBuilding(building) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+        }
+
+        [Fact]
         public async Task GetBuilding_ReturnsBuildings()
         {
             // Arrange

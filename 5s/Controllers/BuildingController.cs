@@ -41,6 +41,10 @@ namespace _5s.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateBuilding([FromBody] Building building)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var newBuilding = await _buildingService.CreateBuilding(building);
