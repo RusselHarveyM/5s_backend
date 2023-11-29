@@ -103,6 +103,10 @@ namespace _5s.Controllers
             try
             {
                 var building = await _buildingService.GetBuildingById(id);
+                if (building == null)
+                {
+                    return NotFound();
+                }
                 return Ok(building);
             }
             catch (Exception ex)
