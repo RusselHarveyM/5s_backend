@@ -16,14 +16,14 @@ namespace _5sApiTest.Controllers
         {
             _spaceImageController = new SpaceImageController(_spaceImageServiceMock.Object);
         }
-        
+
         [Fact]
         public async Task UploadSpaceImage_ValidInput_ReturnsOkResult()
         {
             // Arrange
             var spaceImageServiceMock = new Mock<ISpaceImageService>();
             var spaceImageController = new SpaceImageController(spaceImageServiceMock.Object);
-            
+
             var formFileMock = new Mock<IFormFile>();
             formFileMock.Setup(f => f.Length).Returns(10);
 
@@ -33,6 +33,45 @@ namespace _5sApiTest.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task UploadSpaceImage_InvalidFile_ReturnsBadRequest()
+        {
+            // Arrange
+            var formFileMock = new Mock<IFormFile>();
+            formFileMock.Setup(f => f.Length).Returns(0);
+
+            var controller = new SpaceImageController(_spaceImageServiceMock.Object);
+
+            // Act
+            var result = await controller.UploadSpaceImage(1, formFileMock.Object) as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+            Assert.Equal("Invalid file.", result.Value);
+        }
+
+        [Fact]
+        public async Task UploadSpaceImage_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            var formFileMock = new Mock<IFormFile>();
+            formFileMock.Setup(f => f.Length).Returns(10);
+
+            _spaceImageServiceMock.Setup(service => service.CreateSpaceImage(It.IsAny<SpaceImage>()))
+                                  .ThrowsAsync(new Exception("Simulated service error"));
+
+            var controller = new SpaceImageController(_spaceImageServiceMock.Object);
+
+            // Act
+            var result = await controller.UploadSpaceImage(1, formFileMock.Object) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+            Assert.Equal("Internal server error: Simulated service error", result.Value);
         }
 
         [Fact]
@@ -75,6 +114,47 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
+        public async Task GetSpaceImages_NoImagesFound_ReturnsNotFound()
+        {
+            // Arrange
+            int sampleSpaceId = 1;
+            List<SpaceImage> emptySpaceImagesList = new List<SpaceImage>();
+
+            _spaceImageServiceMock.Setup(service => service.GetAllSpaceImagesBySpaceId(sampleSpaceId))
+                                  .ReturnsAsync(emptySpaceImagesList);
+
+            var controller = new SpaceImageController(_spaceImageServiceMock.Object);
+
+            // Act
+            var result = await controller.GetSpaceImages(sampleSpaceId) as NotFoundObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+            Assert.Equal("Images not found.", result.Value);
+        }
+
+        [Fact]
+        public async Task GetSpaceImages_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            int sampleSpaceId = 1;
+
+            _spaceImageServiceMock.Setup(service => service.GetAllSpaceImagesBySpaceId(sampleSpaceId))
+                                  .ThrowsAsync(new Exception("Simulated service error"));
+
+            var controller = new SpaceImageController(_spaceImageServiceMock.Object);
+
+            // Act
+            var result = await controller.GetSpaceImages(sampleSpaceId) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+            Assert.Equal("Internal server error: Simulated service error", result.Value);
+        }
+
+        [Fact]
         public async Task DeleteSpaceImage_ExistingImageId_ReturnsOkResult()
         {
             // Arrange
@@ -88,6 +168,26 @@ namespace _5sApiTest.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteSpaceImage_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            int sampleImageId = 1;
+
+            _spaceImageServiceMock.Setup(service => service.DeleteSpaceImage(sampleImageId))
+                                  .ThrowsAsync(new Exception("Simulated service error"));
+
+            var controller = new SpaceImageController(_spaceImageServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteSpaceImage(sampleImageId) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+            Assert.Equal("Internal server error: Simulated service error", result.Value);
         }
     }
 }
