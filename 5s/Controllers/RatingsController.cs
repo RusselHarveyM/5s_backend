@@ -38,6 +38,10 @@ namespace _5s.Controllers
             try
             {
                 var ratings = await _ratingsService.GetAllRatings();
+                if (ratings == null || !ratings.Any())
+                {
+                    return NotFound();   
+                }
                 return Ok(ratings);
             }
             catch (Exception ex)

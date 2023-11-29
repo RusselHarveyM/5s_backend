@@ -79,7 +79,7 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task GetRatings_ReturnsOkResult()
+        public async Task GetAllRatings_ReturnsOkResult()
         {
             // Arrange
             var ratingsList = new[]
@@ -124,7 +124,23 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task GetRatings_ExceptionThrown_ReturnsInternalServerError()
+        public async Task GetAllRatings_NoRatingsFound_ReturnsNotFound()
+        {
+            // Arrange
+            List<Ratings> emptyRatingList = new List<Ratings>(); // Empty ratings list
+            _ratingsServiceMock.Setup(service => service.GetAllRatings()).ReturnsAsync(emptyRatingList);
+            var controller = new RatingsController(_ratingsServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRatings() as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllRatings_ExceptionThrown_ReturnsInternalServerError()
         {
             // Arrange
             _ratingsServiceMock.Setup(service => service.GetAllRatings()).ThrowsAsync(new Exception());
