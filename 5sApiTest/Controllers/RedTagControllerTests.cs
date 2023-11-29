@@ -246,9 +246,9 @@ namespace _5sApiTest.Controllers
         {
             // Arrange
             int sampleId = -1;
-            RedTag redTagToUpdate = new RedTag(); // Your RedTag object to update
+            RedTag redTagToUpdate = new RedTag();
 
-            _redTagServiceMock.Setup(service => service.GetRedTagById(sampleId)).ReturnsAsync(new RedTag()); // Simulate RedTag found in database
+            _redTagServiceMock.Setup(service => service.GetRedTagById(sampleId)).ReturnsAsync(new RedTag());
             _redTagServiceMock.Setup(service => service.UpdateRedTag(sampleId, redTagToUpdate)).ThrowsAsync(new Exception("Service error"));
 
             var controller = new RedTagController(_redTagServiceMock.Object);
@@ -306,7 +306,7 @@ namespace _5sApiTest.Controllers
             string redTagNameToDelete = "RedTagToDelete";
 
             _redTagServiceMock.Setup(service => service.GetRedTagByName(redTagNameToDelete)).ReturnsAsync(new RedTag());
-            _redTagServiceMock.Setup(service => service.DeleteRedTag(It.IsAny<int>())).ThrowsAsync(new Exception("Simulated service error"));
+            _redTagServiceMock.Setup(service => service.DeleteRedTag(It.IsAny<int>())).ThrowsAsync(new Exception("Service error"));
 
             var controller = new RedTagController(_redTagServiceMock.Object);
 
