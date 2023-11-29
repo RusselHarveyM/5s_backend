@@ -92,7 +92,7 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task GetComment_ReturnsOkResult()
+        public async Task GetAllComment_ReturnsOkResult()
         {
             // Arrange
             var comments = new List<Comment>
@@ -131,11 +131,27 @@ namespace _5sApiTest.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
-            Assert.IsType<List<Comment>>(result.Value); // Adjust the type according to your actual return type
+            Assert.IsType<List<Comment>>(result.Value);
         }
 
         [Fact]
-        public async Task GetComment_ExceptionThrown_ReturnsInternalServerError()
+        public async Task GetAllComment_NoCommentsFound_ReturnsNotFound()
+        {
+            // Arrange
+            var emptyCommentList = new List<Comment>();
+            _commentServiceMock.Setup(service => service.GetAllComment()).ReturnsAsync(emptyCommentList);
+            var controller = new CommentController(_commentServiceMock.Object);
+
+            // Act
+            var result = await controller.GetComment() as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllComment_ExceptionThrown_ReturnsInternalServerError()
         {
             // Arrange
             _commentServiceMock.Setup(service => service.GetAllComment()).ThrowsAsync(new Exception("Something went wrong"));

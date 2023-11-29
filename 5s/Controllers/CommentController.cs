@@ -1,4 +1,5 @@
-﻿using _5s.Model;
+﻿using System.Xml.Linq;
+using _5s.Model;
 using _5s.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +40,10 @@ namespace _5s.Controllers
             try
             {
                 var comment = await _commentService.GetAllComment();
+                if (comment == null || !comment.Any())
+                {
+                    return NotFound();
+                }
                 return Ok(comment);
             }
             catch (Exception ex)
