@@ -1,6 +1,7 @@
 ﻿using _5s.Controllers;
 using _5s.Model;
 using _5s.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -40,6 +41,52 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
+        public async Task CreateRedTag_InvalidData_ReturnsBadRequest()
+        {
+            // Arrange
+            var redtag = new RedTag
+            {
+                ItemName = null,
+                Quantity = 0,
+                RoomId = -1
+            };
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
+            controller.ModelState.AddModelError("RedTagName", "ItemName is required");
+            controller.ModelState.AddModelError("Quantity", "should be greater than 0");
+            controller.ModelState.AddModelError("RoomId", "RoomId should not be lesser than 0");
+
+            // Act
+            var result = await controller.CreateRedTag(redtag) as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+            Assert.NotNull(result.Value);
+        }
+
+        [Fact]
+        public async Task CreateRedTag_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            var redtag = new RedTag
+            {
+                // Set valid RedTag properties
+            };
+
+            _redTagServiceMock.Setup(service => service.CreateRedTag(redtag)).ThrowsAsync(new Exception("Server error"));
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.CreateRedTag(redtag) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
+        [Fact]
         public async Task GetRedTag_ReturnsOkResultWithRedTagList()
         {
             // Arrange
@@ -60,6 +107,37 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
+        public async Task GetAllRedTag_NoRedTagsFound_ReturnsNotFound()
+        {
+            // Arrange
+            List<RedTag> emptyRedTagList = new List<RedTag>();
+            _redTagServiceMock.Setup(service => service.GetAllRedTag()).ReturnsAsync(emptyRedTagList);
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRedTag() as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllRedTag_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            _redTagServiceMock.Setup(service => service.GetAllRedTag()).ThrowsAsync(new Exception("Server error"));
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRedTag() as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
+        [Fact]
         public async Task GetRedTagById_ValidId_ReturnsOkResultWithRedTag()
         {
             // Arrange
@@ -74,6 +152,38 @@ namespace _5sApiTest.Controllers
             Assert.NotNull(result);
             var redTagResult = Assert.IsType<RedTag>(result.Value);
             Assert.Equal(redTag.Id, redTagResult.Id);
+        }
+
+        [Fact]
+        public async Task GetRedTagById_NoRedTagFound_ReturnsNoContent()
+        {
+            // Arrange
+            int nonExistingId = 999; // Assuming this ID does not exist
+            _redTagServiceMock.Setup(service => service.GetRedTagById(nonExistingId)).ReturnsAsync((RedTag)null);
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRedTag(nonExistingId) as NoContentResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetRedTagById_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            int sampleId = -1;
+            _redTagServiceMock.Setup(service => service.GetRedTagById(sampleId)).ThrowsAsync(new Exception("Service error"));
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRedTag(sampleId) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
 
         [Fact]
@@ -132,19 +242,80 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task DeleteRedTag_ValidName_DeletesRedTag()
+        public async Task UpdateRedTag_ServiceError_ReturnsInternalServerError()
         {
             // Arrange
-            var redTagName = "Sample Item";
-            var redTag = new RedTag { Id = 1, ItemName = redTagName, Quantity = 5, RoomId = 1 };
-            _redTagServiceMock.Setup(service => service.GetRedTagByName(redTagName)).ReturnsAsync(redTag);
+            int sampleId = -1;
+            RedTag redTagToUpdate = new RedTag(); // Your RedTag object to update
+
+            _redTagServiceMock.Setup(service => service.GetRedTagById(sampleId)).ReturnsAsync(new RedTag()); // Simulate RedTag found in database
+            _redTagServiceMock.Setup(service => service.UpdateRedTag(sampleId, redTagToUpdate)).ThrowsAsync(new Exception("Service error"));
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
 
             // Act
-            var result = await _redTagController.DeleteRedTag(redTagName) as OkObjectResult;
+            var result = await controller.UpdateRedTag(sampleId, redTagToUpdate) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteRedTag_RedTagDeleted_ReturnsOk()
+        {
+            // Arrange
+            string redTagNameToDelete = "RedTagToDelete";
+
+            _redTagServiceMock.Setup(service => service.GetRedTagByName(redTagNameToDelete)).ReturnsAsync(new RedTag());
+            _redTagServiceMock.Setup(service => service.DeleteRedTag(It.IsAny<int>())).Returns(Task.CompletedTask);
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteRedTag(redTagNameToDelete) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
             Assert.Equal("RedTag successfully deleted", result.Value);
+        }
+
+        [Fact]
+        public async Task DeleteRedTag_RedTagNotFound_ReturnsNotFound()
+        {
+            // Arrange
+            string nonExistingRedTagName = "NonExistingRedTag";
+
+            _redTagServiceMock.Setup(service => service.GetRedTagByName(nonExistingRedTagName)).ReturnsAsync((RedTag)null);
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteRedTag(nonExistingRedTagName) as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteRedTag_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            string redTagNameToDelete = "RedTagToDelete";
+
+            _redTagServiceMock.Setup(service => service.GetRedTagByName(redTagNameToDelete)).ReturnsAsync(new RedTag());
+            _redTagServiceMock.Setup(service => service.DeleteRedTag(It.IsAny<int>())).ThrowsAsync(new Exception("Simulated service error"));
+
+            var controller = new RedTagController(_redTagServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteRedTag(redTagNameToDelete) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
     }
 }
