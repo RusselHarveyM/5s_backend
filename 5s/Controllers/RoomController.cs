@@ -17,6 +17,10 @@ namespace _5s.Controllers
         [HttpPost(Name = "CreateRoom")]
         public async Task<IActionResult> CreateRoom([FromBody] Room room)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var newRoom = await _roomService.CreateRoom(room);
@@ -34,6 +38,10 @@ namespace _5s.Controllers
             try
             {
                 var room = await _roomService.GetAllRoom();
+                if(room == null || !room.Any())
+                {
+                    return NotFound();
+                }
                 return Ok(room);
             }
             catch (Exception ex)

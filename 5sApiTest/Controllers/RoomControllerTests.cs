@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using _5s.Controllers;
 using _5s.Model;
 using _5s.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -50,7 +51,49 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task GetRoom_ReturnsOkObjectResult()
+        public async Task CreateRoom_InvalidModelState_ReturnsBadRequest()
+        {
+            // Arrange
+            var room = new Room
+            {
+                Id = 1,
+                RoomNumber = null,
+            };
+
+            var controller = new RoomController(_roomServiceMock.Object);
+            controller.ModelState.AddModelError("RoomNumber", "RoomNumber is required");
+
+            // Act
+            var result = await controller.CreateRoom(room) as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task CreateRoom_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            var room = new Room
+            {
+                BuildingId = -1,
+            };
+
+            _roomServiceMock.Setup(service => service.CreateRoom(room)).ThrowsAsync(new Exception("Service error"));
+
+            var controller = new RoomController(_roomServiceMock.Object);
+
+            // Act
+            var result = await controller.CreateRoom(room) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllRoom_ReturnsOkObjectResult()
         {
             // Arrange
             var rooms = new List<Room>
@@ -75,6 +118,37 @@ namespace _5sApiTest.Controllers
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.NotNull(result.Value);
+        }
+
+        [Fact]
+        public async Task GetAllRoom_NoRoomsFound_ReturnsNotFound()
+        {
+            // Arrange
+            var emptyRoomList = new List<Room>();
+            _roomServiceMock.Setup(service => service.GetAllRoom()).ReturnsAsync(emptyRoomList);
+            var controller = new RoomController(_roomServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRoom() as NotFoundResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status404NotFound, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetAllRoom_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            _roomServiceMock.Setup(service => service.GetAllRoom()).ThrowsAsync(new Exception("Service error"));
+            var controller = new RoomController(_roomServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRoom() as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
 
         [Fact]
@@ -104,7 +178,7 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
-        public async Task GetRoom_NonExistingRoomId_ReturnsNotFound()
+        public async Task GetRoomById_NonExistingRoomId_ReturnsNotFound()
         {
             // Arrange
             int nonExistingId = 2;
@@ -129,6 +203,22 @@ namespace _5sApiTest.Controllers
             // Assert
             var result = Assert.IsType<NotFoundResult>(actionResult);
             Assert.Equal(404, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task GetRoomById_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            int roomId = 999999;
+            _roomServiceMock.Setup(service => service.GetRoomById(roomId)).ThrowsAsync(new Exception("Service error"));
+            var controller = new RoomController(_roomServiceMock.Object);
+
+            // Act
+            var result = await controller.GetRoom(roomId) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
 
         [Fact]
@@ -212,6 +302,26 @@ namespace _5sApiTest.Controllers
         }
 
         [Fact]
+        public async Task UpdateRoom_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            int roomId = -1;
+            var roomToUpdate = new Room();
+
+            _roomServiceMock.Setup(service => service.GetRoomById(roomId)).ReturnsAsync(new Room());
+            _roomServiceMock.Setup(service => service.UpdateRooms(roomId, roomToUpdate)).ThrowsAsync(new Exception("Service error"));
+
+            var controller = new RoomController(_roomServiceMock.Object);
+
+            // Act
+            var result = await controller.UpdateRoom(roomId, roomToUpdate) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
+        }
+
+        [Fact]
         public async Task DeleteRoom_ExistingRoomNumber_ReturnsOkResultWithSuccessMessage()
         {
             // Arrange
@@ -255,6 +365,26 @@ namespace _5sApiTest.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal(404, result.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteRoom_ServiceError_ReturnsInternalServerError()
+        {
+            // Arrange
+            string notExisting = "random room number";
+            var roomToDelete = new Room { Id = 1 };
+
+            _roomServiceMock.Setup(service => service.GetRoomByRoomNumber(notExisting)).ReturnsAsync(roomToDelete);
+            _roomServiceMock.Setup(service => service.DeleteRoom(roomToDelete.Id)).ThrowsAsync(new Exception("Service error"));
+
+            var controller = new RoomController(_roomServiceMock.Object);
+
+            // Act
+            var result = await controller.DeleteRoom(notExisting) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(StatusCodes.Status500InternalServerError, result.StatusCode);
         }
     }
 }
