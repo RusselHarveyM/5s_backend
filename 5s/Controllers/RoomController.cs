@@ -15,6 +15,8 @@ namespace _5s.Controllers
         }
 
         [HttpPost(Name = "CreateRoom")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
         public async Task<IActionResult> CreateRoom([FromBody] Room room)
         {
             if (!ModelState.IsValid)

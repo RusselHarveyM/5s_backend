@@ -66,6 +66,7 @@
     <Build Include="Table\Space.sql" />
     <Build Include="Table\User.sql" />
     <Build Include="Table\Comments.sql" />
+    <Build Include="Table\SpaceImage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="5sDB_1.publish.xml" />

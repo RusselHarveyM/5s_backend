@@ -88,5 +88,7 @@ namespace _5s.Repositories
                 return await connection.ExecuteAsync(sql, updateComment);
             }
         }
+        public DapperContext Context => _context;
+
     }
 }

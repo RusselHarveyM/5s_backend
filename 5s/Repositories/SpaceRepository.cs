@@ -14,7 +14,7 @@ namespace _5s.Repositories
         }
         public DapperContext Context => _context;
         public async Task<int> CreateSpace(Space space)
-{
+        {
             var sql = @"
                 INSERT INTO [dbo].[Spaces] ([Name], [Pictures], [RoomId])
                 VALUES (@Name, @Pictures, @RoomId);
