@@ -56,7 +56,7 @@ namespace _5s.Repositories
         {
             var sql = @"
                 SELECT * FROM [dbo].[Comments]
-                WHERE RatingId = @Id;
+                WHERE Id = @Id;
             ";
 
             using (var connection = _context.CreateConnection())
@@ -69,16 +69,16 @@ namespace _5s.Repositories
         {
             var sql = @"
                 UPDATE [dbo].[Comments]
-                SET Sort = @Sort,
-                    SetInOrder = @SetInOrder,
-                    Shine = @Shine,
-                    Standarize = @Standarize,
-                    Sustain = @Sustain,
-                    Security = @Security,
-                    isActive = @isActive,
-                    DateModified = @DateModified,
-                    RatingId = @RatingId
-                WHERE Id = @Id;
+                SET [Sort] = @Sort,
+                    [SetInOrder] = @SetInOrder,
+                    [Shine] = @Shine,
+                    [Standarize] = @Standarize,
+                    [Sustain] = @Sustain,
+                    [Security] = @Security,
+                    [isActive] = @isActive,
+                    [DateModified] = @DateModified,
+                    [RatingId] = @RatingId
+                WHERE [Id] = @Id;
             ";
 
             updateComment.Id = id;

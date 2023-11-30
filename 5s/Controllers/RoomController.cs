@@ -19,6 +19,10 @@ namespace _5s.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> CreateRoom([FromBody] Room room)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var newRoom = await _roomService.CreateRoom(room);
@@ -36,6 +40,10 @@ namespace _5s.Controllers
             try
             {
                 var room = await _roomService.GetAllRoom();
+                if(room == null || !room.Any())
+                {
+                    return NotFound();
+                }
                 return Ok(room);
             }
             catch (Exception ex)
@@ -50,6 +58,10 @@ namespace _5s.Controllers
             try
             {
                 var room = await _roomService.GetRoomById(id);
+                if (room == null)
+                {
+                    return NotFound();
+                }
                 return Ok(room);
             }
             catch (Exception ex)
@@ -76,11 +88,11 @@ namespace _5s.Controllers
         }
 
         [HttpDelete("{name}", Name = "DeleteRoom")]
-        public async Task<IActionResult> DeleteRoom(string name)
+        public async Task<IActionResult> DeleteRoom(string roomNumber)
         {
             try
             {
-                var dbRoom = await _roomService.GetRoomByRoomNumber(name);
+                var dbRoom = await _roomService.GetRoomByRoomNumber(roomNumber);
                 if (dbRoom == null)
                     return NotFound();
                 await _roomService.DeleteRoom(dbRoom.Id);

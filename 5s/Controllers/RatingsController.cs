@@ -19,6 +19,10 @@ namespace _5s.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 var newRating = await _ratingsService.CreateRatings(ratings);
                 return CreatedAtRoute("GetRatingsById", new { id = ratings.Id }, newRating);
             }
@@ -34,6 +38,10 @@ namespace _5s.Controllers
             try
             {
                 var ratings = await _ratingsService.GetAllRatings();
+                if (ratings == null || !ratings.Any())
+                {
+                    return NotFound();   
+                }
                 return Ok(ratings);
             }
             catch (Exception ex)
@@ -48,6 +56,10 @@ namespace _5s.Controllers
             try
             {
                 var rating = await _ratingsService.GetRatingsById(id);
+                if (rating == null)
+                {
+                    return NotFound();
+                }
                 return Ok(rating);
             }
             catch (Exception ex)

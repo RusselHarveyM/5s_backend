@@ -17,9 +17,14 @@ namespace _5s.Controllers
         [HttpPost(Name = "CreateRedTag")]
         public async Task<IActionResult> CreateRedTag([FromBody] RedTag redtag)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var newRedTag = await _redTagService.CreateRedTag(redtag);
+
                 return CreatedAtRoute("GetRedTagById", new { id = redtag.Id }, newRedTag);
             }
             catch (Exception ex)
@@ -34,6 +39,10 @@ namespace _5s.Controllers
             try
             {
                 var redtag = await _redTagService.GetAllRedTag();
+                if(redtag == null || !redtag.Any())
+                {
+                    return NotFound();
+                }
                 return Ok(redtag);
             }
             catch (Exception ex)
@@ -48,6 +57,10 @@ namespace _5s.Controllers
             try
             {
                 var redtag = await _redTagService.GetRedTagById(id);
+                if (redtag == null)
+                {
+                    return NoContent();
+                }
                 return Ok(redtag);
             }
             catch (Exception ex)

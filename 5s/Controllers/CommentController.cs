@@ -1,4 +1,5 @@
-﻿using _5s.Model;
+﻿using System.Xml.Linq;
+using _5s.Model;
 using _5s.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,11 @@ namespace _5s.Controllers
         [HttpPost(Name = "CreateComment")]
         public async Task<IActionResult> CreateComment([FromBody] Comment comment)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 var newComment = await _commentService.CreateComment(comment);
@@ -34,6 +40,10 @@ namespace _5s.Controllers
             try
             {
                 var comment = await _commentService.GetAllComment();
+                if (comment == null || !comment.Any())
+                {
+                    return NotFound();
+                }
                 return Ok(comment);
             }
             catch (Exception ex)
@@ -48,6 +58,10 @@ namespace _5s.Controllers
             try
             {
                 var comment = await _commentService.GetCommentById(id);
+                if (comment == null)
+                {
+                    return NotFound();
+                }
                 return Ok(comment);
             }
             catch (Exception ex)

@@ -17,6 +17,10 @@ namespace _5s.Controllers
         [HttpPost(Name = "CreateSpace")]
         public async Task<IActionResult> CreateSpace([FromBody] Space space)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
                 var newSpace = await _spaceService.CreateSpace(space);
@@ -34,6 +38,10 @@ namespace _5s.Controllers
             try
             {
                 var space = await _spaceService.GetAllSpace();
+                if (space == null || !space.Any())
+                {
+                    return NotFound();
+                }
                 return Ok(space);
             }
             catch (Exception ex)
@@ -48,6 +56,10 @@ namespace _5s.Controllers
             try
             {
                 var space = await _spaceService.GetSpaceById(id);
+                if (space == null)
+                {
+                    return NotFound();
+                }
                 return Ok(space);
             }
             catch (Exception ex)
